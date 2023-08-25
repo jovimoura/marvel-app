@@ -5,11 +5,12 @@ export const THEME = {
 
     TEXT: "#17171B",
 
-    WHITE: "#FFFFFF",
+    WHITE: "#FFF",
     BLACK: "#000000",
     RED: "#F2264B",
     DARK: "#313140",
     GRAY: "#B7B7C8",
+    GRAY_200: "#A4A4A4",
     SILVER: "#F8F8F8",
 
     SUCCESS: "#34D399",
@@ -18,8 +19,18 @@ export const THEME = {
 
     TRANSPARENT: "transparent",
 
-    FOOTER: ["rgba(0,0,0,0)", "rgba(0,0,0,0.9)"],
-    OVERLAY: "rgba(0,0,0,0.6)",
+    GRADIENTS: {
+      BLUE: ["#005BEA", "#00C6FB"],
+      RED: ["#ED1D24", "#ED1F69"],
+
+      PURPLE: ["#B224EF", "#7579FF"],
+      GREEN: ["#0BA360", "#3CBA92"],
+      PINK: ["#FF7EB3", "#FF758C"],
+      BLACK: ["#000000.0", "#000000"],
+      DARK: ["#000000.0", "#000000"],
+      LOGIN: ["#B379DF", "#CC585414", "#B379DF"],
+      LOGIN_BUTTON: ["#ED1D2F", "#BF2EB9"],
+    },
   },
 
   FONT_SIZE: {
@@ -31,30 +42,8 @@ export const THEME = {
     HOME_SUBTITLE: 14,
     DESCRIPTION: 14,
     CARACTERISTIC: 12,
+    XS: 12,
     ABILITY: 12,
     CARD_SUBTITLE: 10,
-  },
-};
-
-export const nativeBaseTheme = {
-  colors: {
-    // Add new color
-    primary: {
-      400: "#8B5CF6",
-    },
-    // Redefining only one shade, rest of the color will remain same.
-    orange: {
-      400: "#FB923C",
-    },
-    red: {
-      400: "#F87171",
-    },
-    green: {
-      400: "#34D399",
-    },
-  },
-  config: {
-    // Changing initialColorMode to 'dark'
-    initialColorMode: "dark",
   },
 };

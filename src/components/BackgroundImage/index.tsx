@@ -6,15 +6,16 @@ import { styles } from "./styles";
 
 interface Props {
   children: React.ReactNode;
-  bgImg: any;
+  bgImg: { uri: string } | number;
+  style?: any;
 }
 
-export function BackgroundImage({ children, bgImg }: Props) {
+export function BackgroundImage({ children, bgImg, style }: Props) {
   return (
     <ImageBackground
       source={bgImg}
       defaultSource={bgImg}
-      style={styles.container}
+      style={{ ...styles.container, ...style }}
     >
       {children}
     </ImageBackground>

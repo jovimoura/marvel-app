@@ -1,14 +1,24 @@
-import { useFonts } from "expo-font";
+import {
+  useFonts,
+  Poppins_300Light,
+  Poppins_400Regular,
+  Poppins_500Medium,
+  Poppins_600SemiBold,
+  Poppins_700Bold,
+  Poppins_900Black,
+} from "@expo-google-fonts/poppins";
 import { StatusBar } from "expo-status-bar";
 import { Loading } from "./src/components/Loading";
 import { Routes } from "./src/routes";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    GilroyRegular: require("./assets/fonts/gilroy/Gilroy-Regular.ttf"),
-    GilroyMedium: require("./assets/fonts/gilroy/Gilroy-Medium.ttf"),
-    GilroySemiBold: require("./assets/fonts/gilroy/Gilroy-SemiBold.ttf"),
-    GilroyBold: require("./assets/fonts/gilroy/Gilroy-Bold.ttf"),
+    Poppins_300Light,
+    Poppins_400Regular,
+    Poppins_600SemiBold,
+    Poppins_500Medium,
+    Poppins_700Bold,
+    Poppins_900Black,
   });
   return (
     <>
