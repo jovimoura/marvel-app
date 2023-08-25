@@ -15,7 +15,7 @@ export function Home() {
         backgroundColor: "blue",
       }}
     >
-      <Text>Home</Text>
+      <Text style={styles.text}>Home</Text>
       <Text>Home</Text>
       <Text>Home</Text>
       <Text>Home</Text>
