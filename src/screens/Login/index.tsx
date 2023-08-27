@@ -27,6 +27,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
+import { THEME } from "../../themes";
 
 export function Login() {
   const auth = FIREBASE_AUTH;
@@ -138,6 +139,7 @@ export function Login() {
                 </TouchableOpacity>
               </View>
               <ButtonGradient
+                colorLoading={THEME.COLORS.WHITE}
                 isLoading={loading}
                 label='Entrar'
                 disabled={loading}
@@ -218,6 +220,7 @@ export function Login() {
                 />
               </View>
               <ButtonGradient
+                colorLoading={THEME.COLORS.WHITE}
                 isLoading={loading}
                 disabled={loading}
                 label='Criar conta'

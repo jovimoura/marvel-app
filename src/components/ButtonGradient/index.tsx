@@ -9,9 +9,15 @@ import { styles } from "./styles";
 interface Props extends TouchableOpacityProps {
   label: string;
   isLoading?: boolean;
+  colorLoading?: string;
 }
 
-export function ButtonGradient({ label, isLoading, ...rest }: Props) {
+export function ButtonGradient({
+  label,
+  colorLoading,
+  isLoading,
+  ...rest
+}: Props) {
   return (
     <TouchableOpacity style={styles.container} {...rest}>
       <LinearGradient
@@ -25,9 +31,14 @@ export function ButtonGradient({ label, isLoading, ...rest }: Props) {
           justifyContent: "center",
           borderRadius: 16,
           maxWidth: 300,
+          height: "100%",
         }}
       >
-        {isLoading ? <Loading /> : <Text style={styles.label}>{label}</Text>}
+        {isLoading ? (
+          <Loading color={colorLoading} />
+        ) : (
+          <Text style={styles.label}>{label}</Text>
+        )}
       </LinearGradient>
     </TouchableOpacity>
   );
