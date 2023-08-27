@@ -10,13 +10,12 @@ export const styles = StyleSheet.create({
     paddingTop: "auto",
   },
   form: {
-    paddingTop: 32,
-    paddingHorizontal: 60,
+    paddingBottom: 40,
+    paddingHorizontal: 30,
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     width: "100%",
-    borderRadius: 60,
     height: "100%",
   },
   header: {
@@ -45,12 +44,19 @@ export const styles = StyleSheet.create({
     color: THEME.COLORS.GRAY_200,
     fontFamily: "Poppins_500Medium",
   },
+  register: {
+    fontSize: 16,
+    color: THEME.COLORS.WHITE,
+    fontFamily: "Poppins_500Medium",
+    textDecorationLine: "underline",
+  },
   socialLabel: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 12,
     marginBottom: 18,
+    marginTop: 4,
   },
   socialBox: {
     flexDirection: "row",

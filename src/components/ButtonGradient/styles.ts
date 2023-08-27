@@ -4,7 +4,7 @@ import { THEME } from "../../themes";
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingVertical: 16,
+    height: 50,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
