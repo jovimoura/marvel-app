@@ -26,6 +26,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { StatusBar } from "expo-status-bar";
 
 export function Login() {
   const auth = FIREBASE_AUTH;
@@ -94,6 +95,7 @@ export function Login() {
     <BackgroundImage
       bgImg={require("../../assets/backgrounds/bg-black-panther.png")}
     >
+      <StatusBar style='light' />
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}

@@ -22,7 +22,7 @@ export default function App() {
   });
   return (
     <>
-      <StatusBar style='auto' />
+      <StatusBar style='dark' />
       {fontsLoaded ? <Routes /> : <Loading />}
     </>
   );

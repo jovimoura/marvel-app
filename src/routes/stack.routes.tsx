@@ -20,7 +20,7 @@ export function StackRoutes() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
         <>
-          <Stack.Screen name='Home' component={Home} />
+          <Stack.Screen name='home' component={Home} />
           <Stack.Screen name='Perfil' component={Perfil} />
         </>
       ) : (
