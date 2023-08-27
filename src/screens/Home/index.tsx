@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { Text, View, Button } from "react-native";
+import { FIREBASE_AUTH } from "../../../FirebaseConfig";
 
 import { styles } from "./styles";
 
@@ -12,18 +13,11 @@ export function Home() {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "blue",
       }}
     >
       <Text style={styles.text}>Home</Text>
-      <Text>Home</Text>
-      <Text>Home</Text>
-      <Text>Home</Text>
 
-      <Button
-        title='Go to Details'
-        onPress={() => navigation.navigate("login")}
-      />
+      <Button title='Sign out' onPress={() => FIREBASE_AUTH.signOut()} />
     </View>
   );
 }
