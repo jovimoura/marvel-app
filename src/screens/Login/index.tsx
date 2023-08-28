@@ -1,5 +1,4 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import {
   Text,
   TouchableOpacity,
@@ -31,7 +30,7 @@ import { THEME } from "../../themes";
 
 export function Login() {
   const auth = FIREBASE_AUTH;
-  const navigation = useNavigation();
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const [viewSignIn, setViewSignIn] = useState(true);
 
@@ -39,55 +38,48 @@ export function Login() {
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
 
   const [email, setEmail] = useState("");
-  const [emailValidator, setEmailValidator] = useState(false);
   const [password, setPassword] = useState("");
-  const [passwordValidator, setPasswordValidator] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [confirmPasswordValidator, setConfirmPasswordValidator] =
-    useState(false);
   const [loading, setLoading] = useState(false);
 
-  async function fetchUser() {
-    const userId = await AsyncStorage.getItem("@marvel-user-id");
-    if (userId) {
-      navigation.navigate("home");
-    }
-  }
-
-  function verifyInputs() {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email === "" && !email.match(regex)) setEmailValidator(true);
-    else setEmailValidator(false);
-    if (password === "") setPasswordValidator(true);
-    else setPasswordValidator(false);
-    if (password !== confirmPassword || confirmPassword === "")
-      setConfirmPasswordValidator(true);
-    else setConfirmPasswordValidator(false);
-  }
-
-  const loginPermition = emailValidator && passwordValidator;
-  const signUpPermition =
-    emailValidator && passwordValidator && confirmPasswordValidator;
+  const [showMessageEmailError, setShowMessageEmailError] = useState(false);
+  const [showMessagePasswordError, setShowMessagePasswordError] =
+    useState(false);
+  const [showMessageConfirmPasswordError, setShowMessageConfirmPasswordError] =
+    useState(false);
 
   async function signIn() {
-    verifyInputs();
-    if (loginPermition) {
+    const emailValidator = email === "" && !email.match(regex);
+    const passwordValidator = password === "";
+
+    const loginPermition = emailValidator && passwordValidator;
+
+    if (!loginPermition) {
       setLoading(true);
       try {
         const res = await signInWithEmailAndPassword(auth, email, password);
-        navigation.navigate("home");
       } catch (error) {
         console.log(error);
         Alert.alert("Error ao logar, por favor verifique seu Email ou senha");
       } finally {
         setLoading(false);
       }
+    } else {
+      setShowMessageEmailError(true);
+      setShowMessagePasswordError(true);
     }
   }
 
   async function signUp() {
-    verifyInputs();
-    if (signUpPermition) {
+    const emailValidator = email === "" && !email.match(regex);
+    const passwordValidator = password === "";
+    const confirmPasswordValidator =
+      confirmPassword === "" || password !== confirmPassword;
+
+    const signUpPermition =
+      emailValidator && passwordValidator && confirmPasswordValidator;
+
+    if (!signUpPermition) {
       setLoading(true);
       if (confirmPassword !== password) {
         Alert.alert(`Por favor verifique sua senha!`);
@@ -110,14 +102,12 @@ export function Login() {
           setLoading(false);
         }
       }
+    } else {
+      setShowMessageEmailError(true);
+      setShowMessageConfirmPasswordError(true);
+      setShowMessagePasswordError(true);
     }
   }
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchUser();
-    }, [])
-  );
 
   return (
     <BackgroundImage
@@ -145,7 +135,7 @@ export function Login() {
                   onChangeText={setEmail}
                   icon='email'
                   errorMessage='Verifique seu email.'
-                  showMessageError={emailValidator}
+                  showMessageError={showMessageEmailError}
                   placeholder='tecnologia@pontua.com.br'
                 />
               </View>
@@ -158,7 +148,7 @@ export function Login() {
                   icon='password'
                   type='password'
                   errorMessage='Verifique sua senha.'
-                  showMessageError={passwordValidator}
+                  showMessageError={showMessagePasswordError}
                   placeholder='Digite sua senha aqui...'
                   eyePress={() => setHidePassword(!hidePassword)}
                   secureTextEntry={hidePassword}
@@ -222,7 +212,7 @@ export function Login() {
                   onChangeText={setEmail}
                   icon='email'
                   errorMessage='Por favor digite seu e-mail'
-                  showMessageError={emailValidator}
+                  showMessageError={showMessageEmailError}
                   placeholder='tecnologia@pontua.com.br'
                 />
               </View>
@@ -235,7 +225,7 @@ export function Login() {
                   icon='password'
                   type='password'
                   errorMessage='Por favor escolha uma senha'
-                  showMessageError={passwordValidator}
+                  showMessageError={showMessagePasswordError}
                   placeholder='Digite sua senha aqui...'
                   eyePress={() => setHidePassword(!hidePassword)}
                   secureTextEntry={hidePassword}
@@ -250,7 +240,7 @@ export function Login() {
                   icon='password'
                   type='password'
                   errorMessage='Senhas diferentes, por favor digite novamente'
-                  showMessageError={confirmPasswordValidator}
+                  showMessageError={showMessageConfirmPasswordError}
                   placeholder='Confirme sua senha aqui...'
                   eyePress={() => setHideConfirmPassword(!hidePassword)}
                   secureTextEntry={hideConfirmPassword}
