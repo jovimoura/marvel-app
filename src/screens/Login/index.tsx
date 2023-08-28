@@ -39,8 +39,12 @@ export function Login() {
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
 
   const [email, setEmail] = useState("");
+  const [emailValidator, setEmailValidator] = useState(false);
   const [password, setPassword] = useState("");
+  const [passwordValidator, setPasswordValidator] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordValidator, setConfirmPasswordValidator] =
+    useState(false);
   const [loading, setLoading] = useState(false);
 
   async function fetchUser() {
@@ -50,38 +54,61 @@ export function Login() {
     }
   }
 
+  function verifyInputs() {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email === "" && !email.match(regex)) setEmailValidator(true);
+    else setEmailValidator(false);
+    if (password === "") setPasswordValidator(true);
+    else setPasswordValidator(false);
+    if (password !== confirmPassword || confirmPassword === "")
+      setConfirmPasswordValidator(true);
+    else setConfirmPasswordValidator(false);
+  }
+
+  const loginPermition = emailValidator && passwordValidator;
+  const signUpPermition =
+    emailValidator && passwordValidator && confirmPasswordValidator;
+
   async function signIn() {
-    setLoading(true);
-    try {
-      const res = await signInWithEmailAndPassword(auth, email, password);
-      console.log("sign in res", res);
-      Alert.alert("check your email");
-      navigation.navigate("home");
-    } catch (error) {
-      console.log(error);
-      Alert.alert("Signin failed" + error);
-    } finally {
-      setLoading(false);
+    verifyInputs();
+    if (loginPermition) {
+      setLoading(true);
+      try {
+        const res = await signInWithEmailAndPassword(auth, email, password);
+        navigation.navigate("home");
+      } catch (error) {
+        console.log(error);
+        Alert.alert("Error ao logar, por favor verifique seu Email ou senha");
+      } finally {
+        setLoading(false);
+      }
     }
   }
 
   async function signUp() {
-    setLoading(true);
-    if (confirmPassword !== password) {
-      Alert.alert(`Por favor verifique sua senha!`);
-    } else {
-      try {
-        const res = await createUserWithEmailAndPassword(auth, email, password);
-        Alert.alert(`Usuário registrado com sucesso!`);
-        AsyncStorage.setItem("@marvel-user-id", res.user.uid);
-        setViewSignIn(true);
-      } catch (error) {
-        console.log(error);
-        Alert.alert(
-          "Ops, tivemos problemas em criar sua conta, tente novamente mais tarde!"
-        );
-      } finally {
-        setLoading(false);
+    verifyInputs();
+    if (signUpPermition) {
+      setLoading(true);
+      if (confirmPassword !== password) {
+        Alert.alert(`Por favor verifique sua senha!`);
+      } else {
+        try {
+          const res = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          Alert.alert(`Usuário registrado com sucesso!`);
+          AsyncStorage.setItem("@marvel-user-id", res.user.uid);
+          setViewSignIn(true);
+        } catch (error) {
+          console.log(error);
+          Alert.alert(
+            "Ops, tivemos problemas em criar sua conta, tente novamente mais tarde!"
+          );
+        } finally {
+          setLoading(false);
+        }
       }
     }
   }
@@ -117,6 +144,8 @@ export function Login() {
                   value={email}
                   onChangeText={setEmail}
                   icon='email'
+                  errorMessage='Verifique seu email.'
+                  showMessageError={emailValidator}
                   placeholder='tecnologia@pontua.com.br'
                 />
               </View>
@@ -128,6 +157,8 @@ export function Login() {
                   onChangeText={setPassword}
                   icon='password'
                   type='password'
+                  errorMessage='Verifique sua senha.'
+                  showMessageError={passwordValidator}
                   placeholder='Digite sua senha aqui...'
                   eyePress={() => setHidePassword(!hidePassword)}
                   secureTextEntry={hidePassword}
@@ -190,6 +221,8 @@ export function Login() {
                   value={email}
                   onChangeText={setEmail}
                   icon='email'
+                  errorMessage='Por favor digite seu e-mail'
+                  showMessageError={emailValidator}
                   placeholder='tecnologia@pontua.com.br'
                 />
               </View>
@@ -201,6 +234,8 @@ export function Login() {
                   onChangeText={setPassword}
                   icon='password'
                   type='password'
+                  errorMessage='Por favor escolha uma senha'
+                  showMessageError={passwordValidator}
                   placeholder='Digite sua senha aqui...'
                   eyePress={() => setHidePassword(!hidePassword)}
                   secureTextEntry={hidePassword}
@@ -214,6 +249,8 @@ export function Login() {
                   onChangeText={setConfirmPassword}
                   icon='password'
                   type='password'
+                  errorMessage='Senhas diferentes, por favor digite novamente'
+                  showMessageError={confirmPasswordValidator}
                   placeholder='Confirme sua senha aqui...'
                   eyePress={() => setHideConfirmPassword(!hidePassword)}
                   secureTextEntry={hideConfirmPassword}
