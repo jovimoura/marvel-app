@@ -10,6 +10,9 @@ import {
 } from "react-native";
 import { FIREBASE_AUTH } from "../../../FirebaseConfig";
 import { Character } from "../../@types/characters";
+import { Comic } from "../../@types/comics";
+import { Events } from "../../@types/events";
+import { Series } from "../../@types/series";
 import { GlassIcon, MarvelLogo } from "../../components/icons";
 import { InfoCard, InfoCardProps } from "../../components/InfoCard";
 import { api, API_HASH_KEY, API_PUBLIC_KEY } from "../../services/api";
@@ -17,10 +20,17 @@ import { THEME } from "../../themes";
 
 import { styles } from "./styles";
 
+interface SectionProps {
+  dataComics: Comic[];
+}
+
 export function Home() {
   const navigation = useNavigation();
 
-  const [data, setData] = useState<Character[]>([]);
+  const [dataHeros, setDataHeros] = useState<Character[]>([]);
+  const [dataComics, setDataComics] = useState<Comic[]>([]);
+  const [dataSeries, setDataSeries] = useState<Series[]>([]);
+  const [dataEvents, setDataEvents] = useState<Events[]>([]);
 
   function handleOpenHeroCard({ id, title, thumbnail }: InfoCardProps) {
     navigation.navigate("perfil", { id, title, thumbnail });
@@ -31,10 +41,34 @@ export function Home() {
       `/v1/public/characters?ts=1&apikey=${API_PUBLIC_KEY}&hash=${API_HASH_KEY}`
     )
       .then((response) => {
-        setData(response.data.data.results);
+        setDataHeros(response.data.data.results);
       })
       .catch((error) => {
-        console.log("Api calls error: ", error);
+        console.log("Api calls hero error: ", error);
+      });
+
+    api(`/v1/public/comics?ts=1&apikey=${API_PUBLIC_KEY}&hash=${API_HASH_KEY}`)
+      .then((response) => {
+        setDataComics(response.data.data.results);
+      })
+      .catch((error) => {
+        console.log("Api calls comics error: ", error);
+      });
+
+    api(`/v1/public/series?ts=1&apikey=${API_PUBLIC_KEY}&hash=${API_HASH_KEY}`)
+      .then((response) => {
+        setDataSeries(response.data.data.results);
+      })
+      .catch((error) => {
+        console.log("Api calls comics error: ", error);
+      });
+
+    api(`/v1/public/events?ts=1&apikey=${API_PUBLIC_KEY}&hash=${API_HASH_KEY}`)
+      .then((response) => {
+        setDataEvents(response.data.data.results);
+      })
+      .catch((error) => {
+        console.log("Api calls comics error: ", error);
       });
   }, []);
 
@@ -107,7 +141,13 @@ export function Home() {
             mídias publicadas pela Marvel Entertainment.
           </Text>
         </View>
-        <View style={{ paddingLeft: 24 }}>
+        <View
+          style={{
+            paddingLeft: 24,
+            marginBottom: 40,
+            maxHeight: 280,
+          }}
+        >
           <Text
             style={{
               color: THEME.COLORS.RED,
@@ -119,7 +159,7 @@ export function Home() {
             Heróis
           </Text>
           <FlatList
-            data={data.filter(
+            data={dataHeros.filter(
               (item) => !item.thumbnail.path.includes("/image_not_available")
             )}
             keyExtractor={(item) => `${item.id}`}
@@ -134,6 +174,117 @@ export function Home() {
                 }
                 data={{
                   title: item.name,
+                  id: `${item.id}`,
+                  thumbnail: item.thumbnail,
+                }}
+              />
+            )}
+            horizontal
+            showsHorizontalScrollIndicator={true}
+            contentContainerStyle={styles.contentList}
+          />
+        </View>
+        <View style={{ paddingLeft: 24, marginBottom: 40, maxHeight: 280 }}>
+          <Text
+            style={{
+              color: THEME.COLORS.RED,
+              fontFamily: THEME.FONT_FAMILY.BOLD,
+              fontSize: THEME.FONT_SIZE.SECTION_TITLE,
+              marginBottom: 12,
+            }}
+          >
+            Quadrinhos
+          </Text>
+          <FlatList
+            data={dataComics.filter(
+              (item) => !item.thumbnail.path.includes("/image_not_available")
+            )}
+            keyExtractor={(item) => `${item.id}`}
+            renderItem={({ item }) => (
+              <InfoCard
+                onPress={() =>
+                  handleOpenHeroCard({
+                    title: item.title,
+                    id: `${item.id}`,
+                    thumbnail: item.thumbnail,
+                  })
+                }
+                data={{
+                  title: item.title,
+                  id: `${item.id}`,
+                  thumbnail: item.thumbnail,
+                }}
+              />
+            )}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.contentList}
+          />
+        </View>
+        <View style={{ paddingLeft: 24, marginBottom: 40, maxHeight: 280 }}>
+          <Text
+            style={{
+              color: THEME.COLORS.RED,
+              fontFamily: THEME.FONT_FAMILY.BOLD,
+              fontSize: THEME.FONT_SIZE.SECTION_TITLE,
+              marginBottom: 12,
+            }}
+          >
+            Séries
+          </Text>
+          <FlatList
+            data={dataSeries.filter(
+              (item) => !item.thumbnail.path.includes("/image_not_available")
+            )}
+            keyExtractor={(item) => `${item.id}`}
+            renderItem={({ item }) => (
+              <InfoCard
+                onPress={() =>
+                  handleOpenHeroCard({
+                    title: item.title,
+                    id: `${item.id}`,
+                    thumbnail: item.thumbnail,
+                  })
+                }
+                data={{
+                  title: item.title,
+                  id: `${item.id}`,
+                  thumbnail: item.thumbnail,
+                }}
+              />
+            )}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.contentList}
+          />
+        </View>
+        <View style={{ paddingLeft: 24, marginBottom: 40, maxHeight: 280 }}>
+          <Text
+            style={{
+              color: THEME.COLORS.RED,
+              fontFamily: THEME.FONT_FAMILY.BOLD,
+              fontSize: THEME.FONT_SIZE.SECTION_TITLE,
+              marginBottom: 12,
+            }}
+          >
+            Eventos
+          </Text>
+          <FlatList
+            data={dataEvents.filter(
+              (item) => !item.thumbnail.path.includes("/image_not_available")
+            )}
+            keyExtractor={(item) => `${item.id}`}
+            renderItem={({ item }) => (
+              <InfoCard
+                onPress={() =>
+                  handleOpenHeroCard({
+                    title: item.title,
+                    id: `${item.id}`,
+                    thumbnail: item.thumbnail,
+                  })
+                }
+                data={{
+                  title: item.title,
                   id: `${item.id}`,
                   thumbnail: item.thumbnail,
                 }}
