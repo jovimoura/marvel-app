@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 58,
     backgroundColor: "rgba(255, 255, 255, 0.05)",
     fontSize: THEME.FONT_SIZE.DESCRIPTION,
-    fontFamily: "Poppins_500Medium",
+    fontFamily: THEME.FONT_FAMILY.MEDIUM,
     color: THEME.COLORS.GRAY_200,
     borderRadius: 8,
     maxWidth: "100%",

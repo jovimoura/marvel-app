@@ -4,6 +4,11 @@ interface LoginPageParams {
 
 interface PerfilPageParams {
   id: string;
+  title: string;
+  thumbnail: {
+    path: string;
+    extension: string;
+  };
 }
 
 export declare global {

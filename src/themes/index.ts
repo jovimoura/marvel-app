@@ -19,6 +19,8 @@ export const THEME = {
 
     TRANSPARENT: "transparent",
 
+    OVERLAY: "rgba(0,0,0,0.6)",
+
     GRADIENTS: {
       BLUE: ["#005BEA", "#00C6FB"],
       RED: ["#ED1D24", "#ED1F69"],
@@ -26,11 +28,20 @@ export const THEME = {
       PURPLE: ["#B224EF", "#7579FF"],
       GREEN: ["#0BA360", "#3CBA92"],
       PINK: ["#FF7EB3", "#FF758C"],
-      BLACK: ["#000000.0", "#000000"],
-      DARK: ["#000000.0", "#000000"],
+      BLACK: ["rgba(0,0,0,0)", "rgba(0,0,0,0.9)"],
+      DARK: ["rgba(0,0,0,0)", "rgba(0,0,0,0.9)"],
       LOGIN: ["#B379DF", "#CC585414", "#B379DF"],
       LOGIN_BUTTON: ["#ED1D2F", "#BF2EB9"],
     },
+  },
+
+  FONT_FAMILY: {
+    LIGHT: "Poppins_300Light",
+    REGULAR: "Poppins_400Regular",
+    MEDIUM: "Poppins_500Medium",
+    SEMI_BOLD: "Poppins_600SemiBold",
+    BOLD: "Poppins_700Bold",
+    BLACK: "Poppins_900Black",
   },
 
   FONT_SIZE: {

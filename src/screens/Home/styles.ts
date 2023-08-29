@@ -5,4 +5,7 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: 20,
   },
+  contentList: {
+    paddingRight: 64,
+  },
 });

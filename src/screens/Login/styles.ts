@@ -26,28 +26,28 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: THEME.FONT_SIZE.PROFILE_TITLE,
     color: THEME.COLORS.WHITE,
-    fontFamily: "Poppins_600SemiBold",
+    fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
   },
   subtitle: {
     fontSize: THEME.FONT_SIZE.PROFILE_SUBTITLE,
     color: THEME.COLORS.GRAY_200,
-    fontFamily: "Poppins_500Medium",
+    fontFamily: THEME.FONT_FAMILY.MEDIUM,
   },
   boxInput: { width: "100%", marginBottom: 12 },
   label: {
     fontSize: THEME.FONT_SIZE.PROFILE_SUBTITLE,
     color: THEME.COLORS.GRAY_200,
-    fontFamily: "Poppins_500Medium",
+    fontFamily: THEME.FONT_FAMILY.MEDIUM,
   },
   text: {
     fontSize: THEME.FONT_SIZE.XS,
     color: THEME.COLORS.GRAY_200,
-    fontFamily: "Poppins_500Medium",
+    fontFamily: THEME.FONT_FAMILY.MEDIUM,
   },
   register: {
     fontSize: 16,
     color: THEME.COLORS.WHITE,
-    fontFamily: "Poppins_500Medium",
+    fontFamily: THEME.FONT_FAMILY.MEDIUM,
     textDecorationLine: "underline",
   },
   socialLabel: {

@@ -21,7 +21,7 @@ export function StackRoutes() {
       {user ? (
         <>
           <Stack.Screen name='home' component={Home} />
-          <Stack.Screen name='Perfil' component={Perfil} />
+          <Stack.Screen name='perfil' component={Perfil} />
         </>
       ) : (
         <Stack.Screen name='Login' component={Login} />
