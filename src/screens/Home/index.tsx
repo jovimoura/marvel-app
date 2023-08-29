@@ -20,10 +20,6 @@ import { THEME } from "../../themes";
 
 import { styles } from "./styles";
 
-interface SectionProps {
-  dataComics: Comic[];
-}
-
 export function Home() {
   const navigation = useNavigation();
 
@@ -159,9 +155,11 @@ export function Home() {
             Heróis
           </Text>
           <FlatList
-            data={dataHeros.filter(
-              (item) => !item.thumbnail.path.includes("/image_not_available")
-            )}
+            data={dataHeros
+              .slice(0, 22)
+              .filter(
+                (item) => !item.thumbnail.path.includes("/image_not_available")
+              )}
             keyExtractor={(item) => `${item.id}`}
             renderItem={({ item }) => (
               <InfoCard
@@ -196,9 +194,11 @@ export function Home() {
             Quadrinhos
           </Text>
           <FlatList
-            data={dataComics.filter(
-              (item) => !item.thumbnail.path.includes("/image_not_available")
-            )}
+            data={dataComics
+              .slice(0, 22)
+              .filter(
+                (item) => !item.thumbnail.path.includes("/image_not_available")
+              )}
             keyExtractor={(item) => `${item.id}`}
             renderItem={({ item }) => (
               <InfoCard
@@ -233,9 +233,11 @@ export function Home() {
             Séries
           </Text>
           <FlatList
-            data={dataSeries.filter(
-              (item) => !item.thumbnail.path.includes("/image_not_available")
-            )}
+            data={dataSeries
+              .slice(0, 22)
+              .filter(
+                (item) => !item.thumbnail.path.includes("/image_not_available")
+              )}
             keyExtractor={(item) => `${item.id}`}
             renderItem={({ item }) => (
               <InfoCard
@@ -270,9 +272,11 @@ export function Home() {
             Eventos
           </Text>
           <FlatList
-            data={dataEvents.filter(
-              (item) => !item.thumbnail.path.includes("/image_not_available")
-            )}
+            data={dataEvents
+              .slice(0, 22)
+              .filter(
+                (item) => !item.thumbnail.path.includes("/image_not_available")
+              )}
             keyExtractor={(item) => `${item.id}`}
             renderItem={({ item }) => (
               <InfoCard
