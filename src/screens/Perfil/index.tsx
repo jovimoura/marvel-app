@@ -15,12 +15,23 @@ import { Comic } from "../../@types/comics";
 import { PerfilPageParams } from "../../@types/navigation";
 import { Story } from "../../@types/storie";
 import { ArrowBackIcon, SortAmountIcon } from "../../components/icons";
-import { InfoCard, InfoCardProps } from "../../components/InfoCard";
+import { InfoCard } from "../../components/InfoCard";
 import { api } from "../../services/api";
 import { keys } from "../../services/endpoints";
 import { THEME } from "../../themes";
 
 import { styles } from "./styles";
+
+interface Props {
+  id: number;
+  type: string;
+  title: string;
+  thumbnail: {
+    path: string;
+    extension: string;
+  };
+  description?: string | undefined | null;
+}
 
 export function Perfil() {
   const route = useRoute();
@@ -39,12 +50,14 @@ export function Perfil() {
     title,
     thumbnail,
     description,
-  }: InfoCardProps) {
+    type,
+  }: Props) {
     navigation.navigate("info", {
       id,
       title,
       thumbnail,
       description,
+      type,
     });
   }
 
@@ -439,6 +452,7 @@ export function Perfil() {
                           id: item.id,
                           thumbnail: item.thumbnail,
                           description: item.description,
+                          type: "comics",
                         })
                       }
                       data={{

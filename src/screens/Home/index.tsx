@@ -89,6 +89,7 @@ export function Home() {
         title,
         thumbnail,
         description,
+        type,
       });
     } else {
       navigation.navigate("perfil", {
@@ -109,12 +110,14 @@ export function Home() {
     title,
     thumbnail,
     description,
-  }: InfoCardProps) {
+    type,
+  }: OpenCardProps) {
     navigation.navigate("info", {
       id,
       title,
       thumbnail,
       description,
+      type,
     });
   }
 
@@ -510,6 +513,7 @@ export function Home() {
                         description: item.description,
                         amountStories: item.stories.available,
                         amountEvents: item.events.available,
+                        type: "comics",
                       })
                     }
                     data={{
@@ -542,6 +546,7 @@ export function Home() {
                         id: item.id,
                         thumbnail: item.thumbnail,
                         description: item.description,
+                        type: "series",
                       })
                     }
                     data={{
@@ -574,6 +579,7 @@ export function Home() {
                         id: item.id,
                         thumbnail: item.thumbnail,
                         description: item.description,
+                        type: "events",
                       })
                     }
                     data={{

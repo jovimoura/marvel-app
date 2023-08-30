@@ -3,7 +3,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import {
-  FlatList,
   ImageBackground,
   SafeAreaView,
   ScrollView,
@@ -11,9 +10,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { PerfilPageParams } from "../../@types/navigation";
-import { Story } from "../../@types/storie";
-import { ArrowBackIcon, SortAmountIcon } from "../../components/icons";
+import { InfoPageParams } from "../../@types/navigation";
+import { ArrowBackIcon } from "../../components/icons";
 
 import { api } from "../../services/api";
 import { keys } from "../../services/endpoints";
@@ -23,16 +21,17 @@ import { styles } from "./styles";
 
 export function Info() {
   const route = useRoute();
-  const perfil = route.params as PerfilPageParams;
+  const perfil = route.params as InfoPageParams;
 
   const navigation = useNavigation();
 
   const [nickname, realNameWithParenteses] = perfil.title.split(" (");
   const realName = realNameWithParenteses?.replace(")", "");
-  const [storie, setStorie] = useState<Story[]>([]);
+  const [storie, setStorie] = useState<any[]>([]);
 
   useEffect(() => {
-    api(`/v1/public/characters/${perfil.id}/stories${keys}`)
+    console.log(`/v1/public/${perfil.type}/${perfil.id}${keys}`);
+    api(`/v1/public/${perfil.type}/${perfil.id}${keys}`)
       .then((response) => {
         setStorie(response.data.data.results);
       })
@@ -40,8 +39,6 @@ export function Info() {
         console.error("err perfil", err);
       });
   }, []);
-
-  console.log("storie", storie);
 
   return (
     <SafeAreaView
@@ -104,7 +101,7 @@ export function Info() {
                     fontSize: THEME.FONT_SIZE.PROFILE_SUBTITLE,
                     color: THEME.COLORS.WHITE,
                     fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                    width: 180,
+                    width: 280,
                     opacity: 0.75,
                   }}
                 >
@@ -117,126 +114,26 @@ export function Info() {
                   lineHeight: 44,
                   color: THEME.COLORS.WHITE,
                   fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                  width: 180,
-                  marginBottom: 48,
+                  width: 280,
+                  marginBottom: 8,
                 }}
               >
                 {nickname}
               </Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 28,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: 28,
-                }}
-              >
-                <View
+              {storie[0]?.variantDescription && (
+                <Text
                   style={{
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    fontSize: THEME.FONT_SIZE.PROFILE_SUBTITLE,
+                    color: THEME.COLORS.WHITE,
+                    fontFamily: THEME.FONT_FAMILY.MEDIUM,
+                    width: 280,
+                    opacity: 0.75,
+                    marginBottom: 48,
                   }}
                 >
-                  <Text
-                    style={{
-                      fontFamily: THEME.FONT_FAMILY.BLACK,
-                      fontSize: THEME.FONT_SIZE.CARD_TITLE,
-                      color: THEME.COLORS.WHITE,
-                    }}
-                  >
-                    {perfil.amountStories}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                      fontSize: THEME.FONT_SIZE.XS,
-                      color: THEME.COLORS.WHITE,
-                    }}
-                  >
-                    Histórias
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontFamily: THEME.FONT_FAMILY.BLACK,
-                      fontSize: THEME.FONT_SIZE.CARD_TITLE,
-                      color: THEME.COLORS.WHITE,
-                    }}
-                  >
-                    {perfil.amountEvents}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                      fontSize: THEME.FONT_SIZE.XS,
-                      color: THEME.COLORS.WHITE,
-                    }}
-                  >
-                    Eventos
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontFamily: THEME.FONT_FAMILY.BLACK,
-                      fontSize: THEME.FONT_SIZE.CARD_TITLE,
-                      color: THEME.COLORS.WHITE,
-                    }}
-                  >
-                    {perfil.amountSeries}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                      fontSize: THEME.FONT_SIZE.XS,
-                      color: THEME.COLORS.WHITE,
-                    }}
-                  >
-                    Séries
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontFamily: THEME.FONT_FAMILY.BLACK,
-                      fontSize: THEME.FONT_SIZE.CARD_TITLE,
-                      color: THEME.COLORS.WHITE,
-                    }}
-                  >
-                    {perfil.amountComics}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                      fontSize: THEME.FONT_SIZE.XS,
-                      color: THEME.COLORS.WHITE,
-                    }}
-                  >
-                    Quadrinhos
-                  </Text>
-                </View>
-              </View>
+                  storie[0]?.variantDescription
+                </Text>
+              )}
               {perfil?.description && (
                 <Text
                   style={{
@@ -249,155 +146,6 @@ export function Info() {
                   {perfil.description}
                 </Text>
               )}
-              <View
-                style={{
-                  width: "100%",
-                  maxWidth: 320,
-                  maxHeight: 150,
-                  height: "100%",
-                  flexDirection: "column",
-                  marginBottom: 38,
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    width: "100%",
-                    maxWidth: 320,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: 34,
-                    marginBottom: 20,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: THEME.COLORS.GRAY_300,
-                      fontSize: THEME.FONT_SIZE.DESCRIPTION,
-                      fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                    }}
-                  >
-                    Data
-                  </Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      width: "100%",
-                      maxWidth: 250,
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: THEME.COLORS.GRAY_300,
-                        fontSize: THEME.FONT_SIZE.DESCRIPTION,
-                        fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                      }}
-                    >
-                      Timeline
-                    </Text>
-                    <TouchableOpacity>
-                      <SortAmountIcon />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    width: "100%",
-                    maxWidth: 320,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        fontSize: THEME.FONT_SIZE.PROFILE_SUBTITLE,
-                        color: THEME.COLORS.WHITE,
-                        fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                        marginBottom: 38,
-                      }}
-                    >
-                      {storie[0]?.modified.substring(0, 4)}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: THEME.FONT_SIZE.PROFILE_SUBTITLE,
-                        color: THEME.COLORS.WHITE,
-                        fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                      }}
-                    >
-                      {storie[storie?.length - 1]?.modified.substring(0, 4)}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      width: 2,
-                      height: "100%",
-                      backgroundColor: THEME.COLORS.WHITE,
-                      marginHorizontal: 16,
-                    }}
-                  />
-                  <View>
-                    <View
-                      style={{
-                        width: "100%",
-                        maxWidth: 250,
-                        minWidth: 250,
-                        height: 45,
-                        borderRadius: 16,
-                        paddingLeft: 18,
-                        paddingVertical: 10,
-                        alignItems: "flex-start",
-                        backgroundColor: THEME.COLORS.RED,
-                        marginBottom: 17,
-                      }}
-                    >
-                      {storie?.length > 0 && (
-                        <Text
-                          style={{
-                            fontSize: THEME.FONT_SIZE.PROFILE_SUBTITLE,
-                            color: THEME.COLORS.WHITE,
-                            fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
-                          }}
-                        >
-                          {storie[0]?.characters?.items[0]?.name}
-                        </Text>
-                      )}
-                    </View>
-                    <View
-                      style={{
-                        width: "100%",
-                        maxWidth: 250,
-                        minWidth: 250,
-                        height: 45,
-                        borderRadius: 16,
-                        paddingLeft: 18,
-                        paddingVertical: 10,
-                        alignItems: "flex-start",
-                        backgroundColor: THEME.COLORS.DARK,
-                      }}
-                    >
-                      {storie?.length > 0 && (
-                        <Text
-                          style={{
-                            fontSize: THEME.FONT_SIZE.PROFILE_SUBTITLE,
-                            color: THEME.COLORS.WHITE,
-                            fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
-                          }}
-                        >
-                          {
-                            storie[storie?.length - 1]?.characters?.items[0]
-                              ?.name
-                          }
-                        </Text>
-                      )}
-                    </View>
-                  </View>
-                </View>
-              </View>
             </View>
           </ScrollView>
         </LinearGradient>

@@ -24,6 +24,7 @@ interface InfoPageParams {
     extension: string;
   };
   description?: string | null | undefined;
+  type?: string | null | undefined;
 }
 
 export declare global {
