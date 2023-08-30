@@ -30,10 +30,26 @@ import {
   seriesEndpoint,
 } from "../../services/endpoints";
 
+interface OpenCardProps {
+  id: number;
+  type?: string;
+  title: string;
+  thumbnail: {
+    path: string;
+    extension: string;
+  };
+  description?: string | undefined | null;
+  amountStories?: number | undefined;
+  amountEvents?: number | undefined;
+  amountSeries?: number | undefined;
+  amountComics?: number | undefined;
+}
+
 export function Home() {
   const navigation = useNavigation();
 
   const [searchBarOpen, setSearchBarOpen] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("hero");
 
   const [dataHeros, setDataHeros] = useState<Character[]>([]);
   const [filteredDataHeros, setFilteredDataHeros] = useState<Character[]>([]);
@@ -64,33 +80,54 @@ export function Home() {
     amountComics,
     amountEvents,
     amountSeries,
+    type,
+  }: OpenCardProps) {
+    console.log(`Card type: ${type}`);
+    if (type === undefined || type !== "hero") {
+      navigation.navigate("info", {
+        id,
+        title,
+        thumbnail,
+        description,
+      });
+    } else {
+      navigation.navigate("perfil", {
+        id,
+        title,
+        thumbnail,
+        description,
+        amountStories,
+        amountEvents,
+        amountSeries,
+        amountComics,
+      });
+    }
+  }
+
+  function handleOpenInfoCard({
+    id,
+    title,
+    thumbnail,
+    description,
   }: InfoCardProps) {
-    navigation.navigate("perfil", {
+    navigation.navigate("info", {
       id,
       title,
       thumbnail,
       description,
-      amountStories,
-      amountEvents,
-      amountSeries,
-      amountComics,
     });
   }
-
-  const [selectedFilter, setSelectedFilter] = useState("hero");
 
   function chooseArray(filter: string) {
     switch (filter) {
       case "hero":
         let newarr =
           debouncedSearchTerm.length > 0
-            ? filteredDataHeros.map((item) => {
-                const { name, ...rest } = item;
-                return { title: name, ...rest };
+            ? filteredDataHeros.map(({ name, ...rest }) => {
+                return { title: name, type: "hero", ...rest };
               })
-            : dataHeros.map((item) => {
-                const { name, ...rest } = item;
-                return { title: name, ...rest };
+            : dataHeros.map(({ name, ...rest }) => {
+                return { title: name, type: "hero", ...rest };
               });
         return newarr.filter(
           (item) =>
@@ -99,7 +136,12 @@ export function Home() {
         );
       case "comics":
         let newarrcomics =
-          debouncedSearchTerm.length > 0 ? filteredDataComics : dataComics;
+          debouncedSearchTerm.length > 0
+            ? filteredDataComics.map(({ ...rest }) => ({
+                type: "comics",
+                ...rest,
+              }))
+            : dataComics.map(({ ...rest }) => ({ type: "comics", ...rest }));
         return newarrcomics.filter(
           (item) =>
             !item.thumbnail.path.includes("/image_not_available") &&
@@ -108,7 +150,12 @@ export function Home() {
         );
       case "events":
         let newarrevents =
-          debouncedSearchTerm.length > 0 ? filteredDataEvents : dataEvents;
+          debouncedSearchTerm.length > 0
+            ? filteredDataEvents.map(({ ...rest }) => ({
+                type: "events",
+                ...rest,
+              }))
+            : dataEvents.map(({ ...rest }) => ({ type: "events", ...rest }));
         return newarrevents.filter(
           (item) =>
             !item.thumbnail.path.includes("/image_not_available") &&
@@ -116,7 +163,12 @@ export function Home() {
         );
       case "series":
         let newarrseries =
-          debouncedSearchTerm.length > 0 ? filteredDataSeries : dataSeries;
+          debouncedSearchTerm.length > 0
+            ? filteredDataSeries.map(({ ...rest }) => ({
+                ...rest,
+                type: "series",
+              }))
+            : dataSeries.map(({ ...rest }) => ({ ...rest, type: "series" }));
         return newarrseries.filter(
           (item) =>
             !item.thumbnail.path.includes("/image_not_available") &&
@@ -366,13 +418,14 @@ export function Home() {
                     onPress={() =>
                       handleOpenHeroCard({
                         title: item.title,
+                        type: item.type,
                         id: item.id,
                         thumbnail: item.thumbnail,
                         description: item.description,
-                        amountStories: item.stories.available,
-                        amountComics: item.comics.available,
-                        amountEvents: item.events.available,
-                        amountSeries: item.series.available,
+                        amountStories: item?.stories?.available,
+                        amountComics: item?.comics?.available,
+                        amountEvents: item?.events?.available,
+                        amountSeries: item?.series?.available,
                       })
                     }
                     data={{
@@ -422,6 +475,7 @@ export function Home() {
                         amountComics: item.comics.available,
                         amountEvents: item.events.available,
                         amountSeries: item.series.available,
+                        type: "hero",
                       })
                     }
                     data={{
@@ -449,7 +503,7 @@ export function Home() {
                 renderItem={({ item }) => (
                   <InfoCard
                     onPress={() =>
-                      handleOpenHeroCard({
+                      handleOpenInfoCard({
                         title: item.title,
                         id: item.id,
                         thumbnail: item.thumbnail,
@@ -483,7 +537,7 @@ export function Home() {
                 renderItem={({ item }) => (
                   <InfoCard
                     onPress={() =>
-                      handleOpenHeroCard({
+                      handleOpenInfoCard({
                         title: item.title,
                         id: item.id,
                         thumbnail: item.thumbnail,
@@ -515,7 +569,7 @@ export function Home() {
                 renderItem={({ item }) => (
                   <InfoCard
                     onPress={() =>
-                      handleOpenHeroCard({
+                      handleOpenInfoCard({
                         title: item.title,
                         id: item.id,
                         thumbnail: item.thumbnail,

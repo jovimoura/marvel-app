@@ -14,11 +14,7 @@ import {
 import { Comic } from "../../@types/comics";
 import { PerfilPageParams } from "../../@types/navigation";
 import { Story } from "../../@types/storie";
-import {
-  ArrowBackIcon,
-  MarvelLogo,
-  SortAmountIcon,
-} from "../../components/icons";
+import { ArrowBackIcon, SortAmountIcon } from "../../components/icons";
 import { InfoCard, InfoCardProps } from "../../components/InfoCard";
 import { api } from "../../services/api";
 import { keys } from "../../services/endpoints";
@@ -38,7 +34,7 @@ export function Perfil() {
   const [storie, setStorie] = useState<Story[]>([]);
   const [comics, setComics] = useState<Comic[]>([]);
 
-  function handleOpenHeroCard({
+  function handleOpenInfoCard({
     id,
     title,
     thumbnail,
@@ -438,7 +434,7 @@ export function Perfil() {
                   renderItem={({ item }) => (
                     <InfoCard
                       onPress={() =>
-                        handleOpenHeroCard({
+                        handleOpenInfoCard({
                           title: item.title,
                           id: item.id,
                           thumbnail: item.thumbnail,
