@@ -9,12 +9,12 @@ export const styles = StyleSheet.create({
     maxHeight: 280,
   },
   listBoxTitle: {
-    color: THEME.COLORS.WHITE,
+    color: THEME.COLORS.RED,
     fontFamily: THEME.FONT_FAMILY.BOLD,
     fontSize: THEME.FONT_SIZE.SECTION_TITLE,
     marginBottom: 12,
   },
   contentList: {
-    paddingRight: 40,
+    paddingRight: 64,
   },
 });

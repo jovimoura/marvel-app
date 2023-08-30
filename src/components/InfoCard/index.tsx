@@ -11,12 +11,17 @@ import { THEME } from "../../themes";
 import { styles } from "./styles";
 
 export interface InfoCardProps {
-  id: string;
+  id: number;
   title: string;
   thumbnail: {
     path: string;
     extension: string;
   };
+  description?: string | undefined | null;
+  amountStories?: number | undefined;
+  amountEvents?: number | undefined;
+  amountSeries?: number | undefined;
+  amountComics?: number | undefined;
 }
 
 interface Props extends TouchableOpacityProps {

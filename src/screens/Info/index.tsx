@@ -11,22 +11,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Comic } from "../../@types/comics";
 import { PerfilPageParams } from "../../@types/navigation";
 import { Story } from "../../@types/storie";
-import {
-  ArrowBackIcon,
-  MarvelLogo,
-  SortAmountIcon,
-} from "../../components/icons";
-import { InfoCard, InfoCardProps } from "../../components/InfoCard";
+import { ArrowBackIcon, SortAmountIcon } from "../../components/icons";
+
 import { api } from "../../services/api";
 import { keys } from "../../services/endpoints";
 import { THEME } from "../../themes";
 
 import { styles } from "./styles";
 
-export function Perfil() {
+export function Info() {
   const route = useRoute();
   const perfil = route.params as PerfilPageParams;
 
@@ -34,36 +29,12 @@ export function Perfil() {
 
   const [nickname, realNameWithParenteses] = perfil.title.split(" (");
   const realName = realNameWithParenteses?.replace(")", "");
-
   const [storie, setStorie] = useState<Story[]>([]);
-  const [comics, setComics] = useState<Comic[]>([]);
-
-  function handleOpenHeroCard({
-    id,
-    title,
-    thumbnail,
-    description,
-  }: InfoCardProps) {
-    navigation.navigate("info", {
-      id,
-      title,
-      thumbnail,
-      description,
-    });
-  }
 
   useEffect(() => {
     api(`/v1/public/characters/${perfil.id}/stories${keys}`)
       .then((response) => {
         setStorie(response.data.data.results);
-      })
-      .catch((err) => {
-        console.error("err perfil", err);
-      });
-
-    api(`/v1/public/characters/${perfil.id}/comics${keys}`)
-      .then((response) => {
-        setComics(response.data.data.results);
       })
       .catch((err) => {
         console.error("err perfil", err);
@@ -426,36 +397,6 @@ export function Perfil() {
                     </View>
                   </View>
                 </View>
-              </View>
-              <View style={styles.listBox}>
-                <Text style={styles.listBoxTitle}>Quadrinhos</Text>
-                <FlatList
-                  data={comics.filter(
-                    (item) =>
-                      !item.thumbnail.path.includes("/image_not_available")
-                  )}
-                  keyExtractor={(item) => `${item.id}`}
-                  renderItem={({ item }) => (
-                    <InfoCard
-                      onPress={() =>
-                        handleOpenHeroCard({
-                          title: item.title,
-                          id: item.id,
-                          thumbnail: item.thumbnail,
-                          description: item.description,
-                        })
-                      }
-                      data={{
-                        title: item.title,
-                        id: item.id,
-                        thumbnail: item.thumbnail,
-                      }}
-                    />
-                  )}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.contentList}
-                />
               </View>
             </View>
           </ScrollView>

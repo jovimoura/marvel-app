@@ -1,6 +1,4 @@
-import { LinearGradient } from "expo-linear-gradient";
 import { CaretRight } from "phosphor-react-native";
-import { useEffect, useState } from "react";
 import {
   ImageBackground,
   Text,

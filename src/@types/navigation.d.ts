@@ -3,12 +3,27 @@ interface LoginPageParams {
 }
 
 interface PerfilPageParams {
-  id: string;
+  id: number;
   title: string;
   thumbnail: {
     path: string;
     extension: string;
   };
+  description?: string | null | undefined;
+  amountStories?: number | undefined;
+  amountEvents?: number | undefined;
+  amountSeries?: number | undefined;
+  amountComics?: number | undefined;
+}
+
+interface InfoPageParams {
+  id: number;
+  title: string;
+  thumbnail: {
+    path: string;
+    extension: string;
+  };
+  description?: string | null | undefined;
 }
 
 export declare global {
@@ -18,6 +33,7 @@ export declare global {
       search: string;
       login: LoginPageParams | undefined;
       perfil: PerfilPageParams;
+      info: InfoPageParams;
     }
   }
 }

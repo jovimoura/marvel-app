@@ -318,3 +318,14 @@ export const Line = (props: any) => {
     </>
   );
 };
+
+export const SortAmountIcon = (props: any) => {
+  return (
+    <Svg width='24' height='24' fill='none' viewBox='0 0 24 24' {...props}>
+      <Path
+        fill={props.color || "#BCC1CD"}
+        d='M6.29 14.29l-.29.3V7a1 1 0 10-2 0v7.59l-.29-.3a1.004 1.004 0 10-1.42 1.42l2 2a1 1 0 00.33.21.94.94 0 00.76 0 1 1 0 00.33-.21l2-2a1.003 1.003 0 10-1.42-1.42zM11 8h10a1 1 0 100-2H11a1 1 0 100 2zm10 3H11a1 1 0 000 2h10a1 1 0 000-2zm0 5H11a1 1 0 000 2h10a1 1 0 000-2z'
+      ></Path>
+    </Svg>
+  );
+};

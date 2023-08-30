@@ -5,6 +5,7 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import { useCallback, useEffect, useState } from "react";
 import { FIREBASE_AUTH } from "../../FirebaseConfig";
 import { Home } from "../screens/Home";
+import { Info } from "../screens/Info";
 import { Login } from "../screens/Login";
 import { Perfil } from "../screens/Perfil";
 
@@ -39,6 +40,7 @@ export function StackRoutes() {
         <>
           <Stack.Screen name='home' component={Home} />
           <Stack.Screen name='perfil' component={Perfil} />
+          <Stack.Screen name='info' component={Info} />
         </>
       ) : (
         <Stack.Screen name='Login' component={Login} />

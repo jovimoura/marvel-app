@@ -30,6 +30,12 @@ export const styles = StyleSheet.create({
     borderBlockColor: "black",
     borderRadius: 100,
   },
+  searchOpenContainer: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+    width: "100%",
+    paddingBottom: 200,
+  },
   searchContainer: {
     alignItems: "center",
     justifyContent: "flex-start",
@@ -43,6 +49,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 24,
     gap: 5,
+    paddingHorizontal: 12,
   },
   filterButton: {
     height: 32,

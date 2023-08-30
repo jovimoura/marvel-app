@@ -55,8 +55,26 @@ export function Home() {
     setSearchBarOpen(!searchBarOpen);
   }
 
-  function handleOpenHeroCard({ id, title, thumbnail }: InfoCardProps) {
-    navigation.navigate("perfil", { id, title, thumbnail });
+  function handleOpenHeroCard({
+    id,
+    title,
+    thumbnail,
+    description,
+    amountStories,
+    amountComics,
+    amountEvents,
+    amountSeries,
+  }: InfoCardProps) {
+    navigation.navigate("perfil", {
+      id,
+      title,
+      thumbnail,
+      description,
+      amountStories,
+      amountEvents,
+      amountSeries,
+      amountComics,
+    });
   }
 
   const [selectedFilter, setSelectedFilter] = useState("hero");
@@ -248,7 +266,7 @@ export function Home() {
           </View>
         </View>
         {searchBarOpen ? (
-          <ScrollView contentContainerStyle={styles.searchContainer}>
+          <View style={styles.searchOpenContainer}>
             <View style={styles.filterBox}>
               <TouchableOpacity
                 style={{
@@ -339,31 +357,38 @@ export function Home() {
                 </Text>
               </TouchableOpacity>
             </View>
-            <FlatList
-              data={arrFiltered as any}
-              keyExtractor={(item) => `${item.id}`}
-              renderItem={({ item }) => (
-                <InfoCardHorizontal
-                  onPress={() =>
-                    handleOpenHeroCard({
+            <ScrollView contentContainerStyle={styles.searchContainer}>
+              <FlatList
+                data={arrFiltered as any}
+                keyExtractor={(item) => `${item.id}`}
+                renderItem={({ item }) => (
+                  <InfoCardHorizontal
+                    onPress={() =>
+                      handleOpenHeroCard({
+                        title: item.title,
+                        id: item.id,
+                        thumbnail: item.thumbnail,
+                        description: item.description,
+                        amountStories: item.stories.available,
+                        amountComics: item.comics.available,
+                        amountEvents: item.events.available,
+                        amountSeries: item.series.available,
+                      })
+                    }
+                    data={{
                       title: item.title,
-                      id: `${item.id}`,
+                      id: item.id,
                       thumbnail: item.thumbnail,
-                    })
-                  }
-                  data={{
-                    title: item.title,
-                    id: `${item.id}`,
-                    thumbnail: item.thumbnail,
-                    description: item.description,
-                  }}
-                />
-              )}
-              showsHorizontalScrollIndicator={true}
-              contentContainerStyle={styles.contentListHorizontal}
-              scrollEnabled={false}
-            />
-          </ScrollView>
+                      description: item.description,
+                    }}
+                  />
+                )}
+                showsHorizontalScrollIndicator={true}
+                contentContainerStyle={styles.contentListHorizontal}
+                scrollEnabled={false}
+              />
+            </ScrollView>
+          </View>
         ) : (
           <ScrollView contentContainerStyle={styles.homeContainer}>
             <View style={styles.infoBox}>
@@ -390,13 +415,18 @@ export function Home() {
                     onPress={() =>
                       handleOpenHeroCard({
                         title: item.name,
-                        id: `${item.id}`,
+                        id: item.id,
                         thumbnail: item.thumbnail,
+                        description: item.description,
+                        amountStories: item.stories.available,
+                        amountComics: item.comics.available,
+                        amountEvents: item.events.available,
+                        amountSeries: item.series.available,
                       })
                     }
                     data={{
                       title: item.name,
-                      id: `${item.id}`,
+                      id: item.id,
                       thumbnail: item.thumbnail,
                     }}
                   />
@@ -421,13 +451,16 @@ export function Home() {
                     onPress={() =>
                       handleOpenHeroCard({
                         title: item.title,
-                        id: `${item.id}`,
+                        id: item.id,
                         thumbnail: item.thumbnail,
+                        description: item.description,
+                        amountStories: item.stories.available,
+                        amountEvents: item.events.available,
                       })
                     }
                     data={{
                       title: item.title,
-                      id: `${item.id}`,
+                      id: item.id,
                       thumbnail: item.thumbnail,
                     }}
                   />
@@ -452,13 +485,14 @@ export function Home() {
                     onPress={() =>
                       handleOpenHeroCard({
                         title: item.title,
-                        id: `${item.id}`,
+                        id: item.id,
                         thumbnail: item.thumbnail,
+                        description: item.description,
                       })
                     }
                     data={{
                       title: item.title,
-                      id: `${item.id}`,
+                      id: item.id,
                       thumbnail: item.thumbnail,
                     }}
                   />
@@ -483,13 +517,14 @@ export function Home() {
                     onPress={() =>
                       handleOpenHeroCard({
                         title: item.title,
-                        id: `${item.id}`,
+                        id: item.id,
                         thumbnail: item.thumbnail,
+                        description: item.description,
                       })
                     }
                     data={{
                       title: item.title,
-                      id: `${item.id}`,
+                      id: item.id,
                       thumbnail: item.thumbnail,
                     }}
                   />

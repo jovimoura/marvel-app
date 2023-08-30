@@ -11,6 +11,7 @@ export const THEME = {
     DARK: "#313140",
     GRAY: "#B7B7C8",
     GRAY_200: "#A4A4A4",
+    GRAY_300: "#BCC1CD",
     SILVER: "#F8F8F8",
 
     SUCCESS: "#34D399",
