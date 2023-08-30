@@ -30,6 +30,8 @@ export const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   name: {
+    width: "100%",
+    maxWidth: 200,
     color: THEME.COLORS.WHITE,
     fontSize: THEME.FONT_SIZE.CARD_TITLE,
     fontFamily: THEME.FONT_FAMILY.MEDIUM,

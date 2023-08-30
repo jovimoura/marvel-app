@@ -34,7 +34,9 @@ export function InfoCardHorizontal({ data, ...rest }: Props) {
         source={{ uri: `${data.thumbnail.path}.${data.thumbnail.extension}` }}
       />
       <View style={styles.infoBox}>
-        <Text style={styles.name}>{data.title}</Text>
+        <Text numberOfLines={1} style={styles.name}>
+          {data.title}
+        </Text>
         {data.description && (
           <Text numberOfLines={5} style={styles.description}>
             {data.description}

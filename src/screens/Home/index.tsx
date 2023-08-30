@@ -18,10 +18,17 @@ import { MarvelLogo } from "../../components/icons";
 import { InfoCard, InfoCardProps } from "../../components/InfoCard";
 import { InfoCardHorizontal } from "../../components/InfoCardHorizontal";
 import { SearchBar } from "../../components/SearchBar";
-import { api, API_HASH_KEY, API_PUBLIC_KEY } from "../../services/api";
+import { api } from "../../services/api";
 import { THEME } from "../../themes";
 
 import { styles } from "./styles";
+import { useDebounce } from "../../hooks/useDebouce";
+import {
+  charactersEndpoint,
+  comicsEndpoint,
+  eventsEndpoint,
+  seriesEndpoint,
+} from "../../services/endpoints";
 
 export function Home() {
   const navigation = useNavigation();
@@ -29,9 +36,24 @@ export function Home() {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
 
   const [dataHeros, setDataHeros] = useState<Character[]>([]);
+  const [filteredDataHeros, setFilteredDataHeros] = useState<Character[]>([]);
+
   const [dataComics, setDataComics] = useState<Comic[]>([]);
+  const [filteredDataComics, setFilteredDataComics] = useState<Comic[]>([]);
+
   const [dataSeries, setDataSeries] = useState<Series[]>([]);
+  const [filteredDataSeries, setFilteredDataSeries] = useState<Series[]>([]);
+
   const [dataEvents, setDataEvents] = useState<Events[]>([]);
+  const [filteredDataEvents, setFilteredDataEvents] = useState<Events[]>([]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 200);
+
+  function handleSearchBar() {
+    setSearchTerm("");
+    setSearchBarOpen(!searchBarOpen);
+  }
 
   function handleOpenHeroCard({ id, title, thumbnail }: InfoCardProps) {
     navigation.navigate("perfil", { id, title, thumbnail });
@@ -39,108 +61,164 @@ export function Home() {
 
   const [selectedFilter, setSelectedFilter] = useState("hero");
 
-  const arrFiltered = chooseArray(selectedFilter);
-
   function chooseArray(filter: string) {
     switch (filter) {
       case "hero":
-        let newarr = dataHeros.map((item) => {
-          const { name, id, ...rest } = item;
-          return { title: name, id: `${id}`, ...rest };
-        });
-        return newarr
-          .slice(0, 22)
-          .filter(
-            (item) =>
-              !item.thumbnail.path.includes("/image_not_available") &&
-              item.description.length > 0
-          );
+        let newarr =
+          debouncedSearchTerm.length > 0
+            ? filteredDataHeros.map((item) => {
+                const { name, ...rest } = item;
+                return { title: name, ...rest };
+              })
+            : dataHeros.map((item) => {
+                const { name, ...rest } = item;
+                return { title: name, ...rest };
+              });
+        return newarr.filter(
+          (item) =>
+            !item.thumbnail.path.includes("/image_not_available") &&
+            item.description.length > 1
+        );
       case "comics":
-        let newarrcomics = dataComics.map((item) => {
-          const { id, ...rest } = item;
-          return { id: `${id}`, ...rest };
-        });
-        return newarrcomics
-          .slice(0, 22)
-          .filter(
-            (item) =>
-              !item.thumbnail.path.includes("/image_not_available") &&
-              item.description &&
-              item.description !== null
-          );
+        let newarrcomics =
+          debouncedSearchTerm.length > 0 ? filteredDataComics : dataComics;
+        return newarrcomics.filter(
+          (item) =>
+            !item.thumbnail.path.includes("/image_not_available") &&
+            item.description &&
+            item.description !== null
+        );
       case "events":
-        let newarrevents = dataEvents.map((item) => {
-          const { id, ...rest } = item;
-          return { id: `${id}`, ...rest };
-        });
-        return newarrevents
-          .slice(0, 22)
-          .filter(
-            (item) =>
-              !item.thumbnail.path.includes("/image_not_available") &&
-              item.description
-          );
+        let newarrevents =
+          debouncedSearchTerm.length > 0 ? filteredDataEvents : dataEvents;
+        return newarrevents.filter(
+          (item) =>
+            !item.thumbnail.path.includes("/image_not_available") &&
+            item.description
+        );
       case "series":
-        let newarraseries = dataSeries.map((item) => {
-          const { id, ...rest } = item;
-          return { id: `${id}`, ...rest };
-        });
-        return newarraseries
-          .slice(0, 22)
-          .filter(
-            (item) =>
-              !item.thumbnail.path.includes("/image_not_available") &&
-              item.description
-          );
+        let newarrseries =
+          debouncedSearchTerm.length > 0 ? filteredDataSeries : dataSeries;
+        return newarrseries.filter(
+          (item) =>
+            !item.thumbnail.path.includes("/image_not_available") &&
+            item.description
+        );
 
       default:
-        return dataComics
-          .slice(0, 22)
-          .filter(
-            (item) =>
-              !item.thumbnail.path.includes("/image_not_available") &&
-              item.description &&
-              item.description !== null
-          );
-        break;
+        return dataComics.filter(
+          (item) =>
+            !item.thumbnail.path.includes("/image_not_available") &&
+            item.description &&
+            item.description !== null
+        );
     }
   }
 
+  const arrFiltered = chooseArray(selectedFilter);
+
   useEffect(() => {
-    api(
-      `/v1/public/characters?ts=1&apikey=${API_PUBLIC_KEY}&hash=${API_HASH_KEY}`
-    )
-      .then((response) => {
-        setDataHeros(response.data.data.results);
-      })
-      .catch((error) => {
-        console.log("Api calls hero error: ", error);
-      });
+    if (debouncedSearchTerm.length > 0) {
+      api(charactersEndpoint + `&nameStartsWith=${debouncedSearchTerm}`)
+        .then((response) => {
+          let newarr = response.data.data.results.map((item: Character) => {
+            const { name, ...rest } = item;
+            return { title: name, ...rest };
+          });
+          newarr.filter(
+            (item: Character) =>
+              !item.thumbnail.path.includes("/image_not_available")
+          );
+          setFilteredDataHeros(newarr);
+        })
+        .catch((error) => {
+          console.log("Api calls hero error filter: ", error);
+        });
 
-    api(`/v1/public/comics?ts=1&apikey=${API_PUBLIC_KEY}&hash=${API_HASH_KEY}`)
-      .then((response) => {
-        setDataComics(response.data.data.results);
-      })
-      .catch((error) => {
-        console.log("Api calls comics error: ", error);
-      });
+      api(comicsEndpoint + `&titleStartsWith=${debouncedSearchTerm}`)
+        .then((response) => {
+          let newarr = response.data.data.results.map((item: Character) => {
+            const { name, id, ...rest } = item;
+            return { title: name, id: `${id}`, ...rest };
+          });
+          newarr.filter(
+            (item: Comic) =>
+              !item.thumbnail.path.includes("/image_not_available") &&
+              item.description
+          );
+          setFilteredDataComics(newarr);
+        })
+        .catch((error) => {
+          console.log("Api calls comics error filter: ", error);
+        });
 
-    api(`/v1/public/series?ts=1&apikey=${API_PUBLIC_KEY}&hash=${API_HASH_KEY}`)
-      .then((response) => {
-        setDataSeries(response.data.data.results);
-      })
-      .catch((error) => {
-        console.log("Api calls comics error: ", error);
-      });
+      api(eventsEndpoint + `&nameStartsWith=${debouncedSearchTerm}`)
+        .then((response) => {
+          let newarr = response.data.data.results.map((item: Character) => {
+            const { name, id, ...rest } = item;
+            return { title: name, id: `${id}`, ...rest };
+          });
+          newarr.filter(
+            (item: Events) =>
+              !item.thumbnail.path.includes("/image_not_available") &&
+              item.description
+          );
+          setFilteredDataEvents(newarr);
+        })
+        .catch((error) => {
+          console.log("Api calls events error filter: ", error);
+        });
 
-    api(`/v1/public/events?ts=1&apikey=${API_PUBLIC_KEY}&hash=${API_HASH_KEY}`)
-      .then((response) => {
-        setDataEvents(response.data.data.results);
-      })
-      .catch((error) => {
-        console.log("Api calls comics error: ", error);
-      });
-  }, []);
+      api(seriesEndpoint + `&titleStartsWith=${debouncedSearchTerm}`)
+        .then((response) => {
+          let newarr = response.data.data.results.map((item: Character) => {
+            const { name, id, ...rest } = item;
+            return { title: name, id: `${id}`, ...rest };
+          });
+          newarr.filter(
+            (item: Series) =>
+              !item.thumbnail.path.includes("/image_not_available") &&
+              item.description
+          );
+          setFilteredDataSeries(newarr);
+        })
+        .catch((error) => {
+          console.log("Api calls series error filter: ", error);
+        });
+    } else {
+      api(charactersEndpoint)
+        .then((response) => {
+          setDataHeros(response.data.data.results);
+        })
+        .catch((error) => {
+          console.log("Api calls hero error: ", error);
+        });
+
+      api(comicsEndpoint)
+        .then((response) => {
+          setDataComics(response.data.data.results);
+        })
+        .catch((error) => {
+          console.log("Api calls comics error: ", error);
+        });
+
+      api(seriesEndpoint)
+        .then((response) => {
+          setDataSeries(response.data.data.results);
+        })
+        .catch((error) => {
+          console.log("Api calls series error: ", error);
+        });
+
+      api(eventsEndpoint)
+        .then((response) => {
+          setDataEvents(response.data.data.results);
+        })
+        .catch((error) => {
+          console.log("Api calls events error: ", error);
+        });
+    }
+  }, [debouncedSearchTerm]);
 
   return (
     <SafeAreaView
@@ -193,8 +271,10 @@ export function Home() {
             style={{ position: "absolute", right: searchBarOpen ? 28 : 56 }}
           >
             <SearchBar
+              value={searchTerm}
+              onChangeText={setSearchTerm}
               open={searchBarOpen}
-              onPress={() => setSearchBarOpen(!searchBarOpen)}
+              onPress={handleSearchBar}
             />
           </View>
         </View>
@@ -347,7 +427,7 @@ export function Home() {
                     })
                   }
                   data={{
-                    title: item.title.replace(/\([^)]*\)/g, ""),
+                    title: item.title,
                     id: `${item.id}`,
                     thumbnail: item.thumbnail,
                     description: item.description,
