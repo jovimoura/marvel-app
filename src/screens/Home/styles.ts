@@ -8,4 +8,8 @@ export const styles = StyleSheet.create({
   contentList: {
     paddingRight: 64,
   },
+  contentListHorizontal: {
+    maxWidth: "100%",
+    width: "100%",
+  },
 });
