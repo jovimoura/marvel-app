@@ -221,12 +221,7 @@ export function Home() {
   }, [debouncedSearchTerm]);
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: "white",
-      }}
-    >
+    <SafeAreaView style={styles.container}>
       <View
         style={{
           alignItems: "center",
@@ -234,35 +229,9 @@ export function Home() {
           paddingTop: 80,
         }}
       >
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "row",
-            position: "relative",
-            width: "100%",
-            marginBottom: 40,
-          }}
-        >
+        <View style={styles.header}>
           {!searchBarOpen && (
-            <TouchableOpacity
-              style={{
-                position: "absolute",
-                left: 28,
-                width: 40,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-                shadowColor: "black",
-                shadowOffset: { width: 2, height: 0 },
-                shadowOpacity: 0.2,
-                shadowRadius: 3,
-                elevation: 2,
-                borderBlockColor: "black",
-                borderRadius: 100,
-              }}
-            >
+            <TouchableOpacity style={styles.configButton}>
               <User size={24} weight='bold' />
             </TouchableOpacity>
           )}
@@ -279,44 +248,21 @@ export function Home() {
           </View>
         </View>
         {searchBarOpen ? (
-          <ScrollView
-            contentContainerStyle={{
-              alignItems: "center",
-              justifyContent: "flex-start",
-              paddingBottom: 120,
-              width: "100%",
-            }}
-          >
-            <View
-              style={{
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "flex-start",
-                flexDirection: "row",
-                marginBottom: 24,
-                gap: 5,
-              }}
-            >
+          <ScrollView contentContainerStyle={styles.searchContainer}>
+            <View style={styles.filterBox}>
               <TouchableOpacity
                 style={{
-                  height: 32,
-                  paddingHorizontal: 15,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 26,
-                  borderWidth: 1,
+                  ...styles.filterButton,
                   backgroundColor:
                     selectedFilter === "hero"
                       ? THEME.COLORS.DARK
                       : THEME.COLORS.WHITE,
-                  borderColor: THEME.COLORS.DARK,
                 }}
                 onPress={() => setSelectedFilter("hero")}
               >
                 <Text
                   style={{
-                    fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                    fontSize: THEME.FONT_SIZE.XS,
+                    ...styles.filterButtonLabel,
                     color:
                       selectedFilter === "hero"
                         ? THEME.COLORS.WHITE
@@ -328,13 +274,7 @@ export function Home() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  height: 32,
-                  paddingHorizontal: 15,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 26,
-                  borderWidth: 1,
-                  borderColor: THEME.COLORS.DARK,
+                  ...styles.filterButton,
                   backgroundColor:
                     selectedFilter === "comics"
                       ? THEME.COLORS.DARK
@@ -344,8 +284,7 @@ export function Home() {
               >
                 <Text
                   style={{
-                    fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                    fontSize: THEME.FONT_SIZE.XS,
+                    ...styles.filterButtonLabel,
                     color:
                       selectedFilter === "comics"
                         ? THEME.COLORS.WHITE
@@ -357,24 +296,17 @@ export function Home() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  height: 32,
-                  paddingHorizontal: 15,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 26,
-                  borderWidth: 1,
+                  ...styles.filterButton,
                   backgroundColor:
                     selectedFilter === "series"
                       ? THEME.COLORS.DARK
                       : THEME.COLORS.WHITE,
-                  borderColor: THEME.COLORS.DARK,
                 }}
                 onPress={() => setSelectedFilter("series")}
               >
                 <Text
                   style={{
-                    fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                    fontSize: THEME.FONT_SIZE.XS,
+                    ...styles.filterButtonLabel,
                     color:
                       selectedFilter === "series"
                         ? THEME.COLORS.WHITE
@@ -386,24 +318,17 @@ export function Home() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  height: 32,
-                  paddingHorizontal: 15,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 26,
-                  borderWidth: 1,
+                  ...styles.filterButton,
                   backgroundColor:
                     selectedFilter === "events"
                       ? THEME.COLORS.DARK
                       : THEME.COLORS.WHITE,
-                  borderColor: THEME.COLORS.DARK,
                 }}
                 onPress={() => setSelectedFilter("events")}
               >
                 <Text
                   style={{
-                    fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                    fontSize: THEME.FONT_SIZE.XS,
+                    ...styles.filterButtonLabel,
                     color:
                       selectedFilter === "events"
                         ? THEME.COLORS.WHITE
@@ -440,71 +365,18 @@ export function Home() {
             />
           </ScrollView>
         ) : (
-          <ScrollView
-            contentContainerStyle={{
-              alignItems: "center",
-              justifyContent: "flex-start",
-              paddingBottom: 80,
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "column",
-                alignItems: "flex-start",
-                width: "100%",
-                paddingHorizontal: 24,
-                gap: 8,
-                marginBottom: 28,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: THEME.FONT_SIZE.HOME_SUBTITLE,
-                  color: THEME.COLORS.GRAY,
-                  fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
-                }}
-              >
-                Bem vindo ao Pontua Marvel
-              </Text>
-              <Text
-                style={{
-                  fontSize: THEME.FONT_SIZE.HOME_TITLE,
-                  color: THEME.COLORS.DARK,
-                  fontFamily: THEME.FONT_FAMILY.MEDIUM,
-                  lineHeight: 38,
-                }}
-              >
-                Escolha o seu personagem
-              </Text>
-              <Text
-                style={{
-                  fontSize: THEME.FONT_SIZE.HOME_SUBTITLE,
-                  color: THEME.COLORS.GRAY,
-                  fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
-                }}
-              >
+          <ScrollView contentContainerStyle={styles.homeContainer}>
+            <View style={styles.infoBox}>
+              <Text style={styles.subtitle}>Bem vindo ao Pontua Marvel</Text>
+              <Text style={styles.title}>Escolha o seu personagem</Text>
+              <Text style={styles.subtitle}>
                 O Universo Marvel é o universo compartilhado onde ocorrem as
                 histórias na maioria dos títulos de quadrinhos americanos e
                 outras mídias publicadas pela Marvel Entertainment.
               </Text>
             </View>
-            <View
-              style={{
-                paddingLeft: 24,
-                marginBottom: 40,
-                maxHeight: 280,
-              }}
-            >
-              <Text
-                style={{
-                  color: THEME.COLORS.RED,
-                  fontFamily: THEME.FONT_FAMILY.BOLD,
-                  fontSize: THEME.FONT_SIZE.SECTION_TITLE,
-                  marginBottom: 12,
-                }}
-              >
-                Heróis
-              </Text>
+            <View style={styles.listBox}>
+              <Text style={styles.listBoxTitle}>Heróis</Text>
               <FlatList
                 data={dataHeros
                   .slice(0, 22)
@@ -534,17 +406,8 @@ export function Home() {
                 contentContainerStyle={styles.contentList}
               />
             </View>
-            <View style={{ paddingLeft: 24, marginBottom: 40, maxHeight: 280 }}>
-              <Text
-                style={{
-                  color: THEME.COLORS.RED,
-                  fontFamily: THEME.FONT_FAMILY.BOLD,
-                  fontSize: THEME.FONT_SIZE.SECTION_TITLE,
-                  marginBottom: 12,
-                }}
-              >
-                Quadrinhos
-              </Text>
+            <View style={styles.listBox}>
+              <Text style={styles.listBoxTitle}>Quadrinhos</Text>
               <FlatList
                 data={dataComics
                   .slice(0, 22)
@@ -574,17 +437,8 @@ export function Home() {
                 contentContainerStyle={styles.contentList}
               />
             </View>
-            <View style={{ paddingLeft: 24, marginBottom: 40, maxHeight: 280 }}>
-              <Text
-                style={{
-                  color: THEME.COLORS.RED,
-                  fontFamily: THEME.FONT_FAMILY.BOLD,
-                  fontSize: THEME.FONT_SIZE.SECTION_TITLE,
-                  marginBottom: 12,
-                }}
-              >
-                Séries
-              </Text>
+            <View style={styles.listBox}>
+              <Text style={styles.listBoxTitle}>Séries</Text>
               <FlatList
                 data={dataSeries
                   .slice(0, 22)
@@ -614,17 +468,8 @@ export function Home() {
                 contentContainerStyle={styles.contentList}
               />
             </View>
-            <View style={{ paddingLeft: 24, marginBottom: 40, maxHeight: 280 }}>
-              <Text
-                style={{
-                  color: THEME.COLORS.RED,
-                  fontFamily: THEME.FONT_FAMILY.BOLD,
-                  fontSize: THEME.FONT_SIZE.SECTION_TITLE,
-                  marginBottom: 12,
-                }}
-              >
-                Eventos
-              </Text>
+            <View style={styles.listBox}>
+              <Text style={styles.listBoxTitle}>Eventos</Text>
               <FlatList
                 data={dataEvents
                   .slice(0, 22)
