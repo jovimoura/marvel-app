@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: "flex-start",
     backgroundColor: THEME.COLORS.DARK,
+    position: "relative",
   },
   cover: {
     width: 96,
@@ -46,4 +47,5 @@ export const styles = StyleSheet.create({
     justifyContent: "flex-start",
     flexDirection: "column",
   },
+  caret: { position: "absolute", top: "50%", right: 2 },
 });

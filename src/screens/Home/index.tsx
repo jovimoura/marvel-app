@@ -37,6 +37,75 @@ export function Home() {
     navigation.navigate("perfil", { id, title, thumbnail });
   }
 
+  const [selectedFilter, setSelectedFilter] = useState("hero");
+
+  const arrFiltered = chooseArray(selectedFilter);
+
+  function chooseArray(filter: string) {
+    switch (filter) {
+      case "hero":
+        let newarr = dataHeros.map((item) => {
+          const { name, id, ...rest } = item;
+          return { title: name, id: `${id}`, ...rest };
+        });
+        return newarr
+          .slice(0, 22)
+          .filter(
+            (item) =>
+              !item.thumbnail.path.includes("/image_not_available") &&
+              item.description.length > 0
+          );
+      case "comics":
+        let newarrcomics = dataComics.map((item) => {
+          const { id, ...rest } = item;
+          return { id: `${id}`, ...rest };
+        });
+        return newarrcomics
+          .slice(0, 22)
+          .filter(
+            (item) =>
+              !item.thumbnail.path.includes("/image_not_available") &&
+              item.description &&
+              item.description !== null
+          );
+      case "events":
+        let newarrevents = dataEvents.map((item) => {
+          const { id, ...rest } = item;
+          return { id: `${id}`, ...rest };
+        });
+        return newarrevents
+          .slice(0, 22)
+          .filter(
+            (item) =>
+              !item.thumbnail.path.includes("/image_not_available") &&
+              item.description
+          );
+      case "series":
+        let newarraseries = dataSeries.map((item) => {
+          const { id, ...rest } = item;
+          return { id: `${id}`, ...rest };
+        });
+        return newarraseries
+          .slice(0, 22)
+          .filter(
+            (item) =>
+              !item.thumbnail.path.includes("/image_not_available") &&
+              item.description
+          );
+
+      default:
+        return dataComics
+          .slice(0, 22)
+          .filter(
+            (item) =>
+              !item.thumbnail.path.includes("/image_not_available") &&
+              item.description &&
+              item.description !== null
+          );
+        break;
+    }
+  }
+
   useEffect(() => {
     api(
       `/v1/public/characters?ts=1&apikey=${API_PUBLIC_KEY}&hash=${API_HASH_KEY}`
@@ -72,8 +141,6 @@ export function Home() {
         console.log("Api calls comics error: ", error);
       });
   }, []);
-
-  console.log("search bar", searchBarOpen);
 
   return (
     <SafeAreaView
@@ -158,15 +225,22 @@ export function Home() {
                   justifyContent: "center",
                   borderRadius: 26,
                   borderWidth: 1,
-                  backgroundColor: THEME.COLORS.DARK,
+                  backgroundColor:
+                    selectedFilter === "hero"
+                      ? THEME.COLORS.DARK
+                      : THEME.COLORS.WHITE,
                   borderColor: THEME.COLORS.DARK,
                 }}
+                onPress={() => setSelectedFilter("hero")}
               >
                 <Text
                   style={{
                     fontFamily: THEME.FONT_FAMILY.MEDIUM,
                     fontSize: THEME.FONT_SIZE.XS,
-                    color: THEME.COLORS.WHITE,
+                    color:
+                      selectedFilter === "hero"
+                        ? THEME.COLORS.WHITE
+                        : THEME.COLORS.DARK,
                   }}
                 >
                   Heróis
@@ -181,13 +255,21 @@ export function Home() {
                   borderRadius: 26,
                   borderWidth: 1,
                   borderColor: THEME.COLORS.DARK,
+                  backgroundColor:
+                    selectedFilter === "comics"
+                      ? THEME.COLORS.DARK
+                      : THEME.COLORS.WHITE,
                 }}
+                onPress={() => setSelectedFilter("comics")}
               >
                 <Text
                   style={{
                     fontFamily: THEME.FONT_FAMILY.MEDIUM,
                     fontSize: THEME.FONT_SIZE.XS,
-                    color: THEME.COLORS.DARK,
+                    color:
+                      selectedFilter === "comics"
+                        ? THEME.COLORS.WHITE
+                        : THEME.COLORS.DARK,
                   }}
                 >
                   Quadrinhos
@@ -201,14 +283,22 @@ export function Home() {
                   justifyContent: "center",
                   borderRadius: 26,
                   borderWidth: 1,
+                  backgroundColor:
+                    selectedFilter === "series"
+                      ? THEME.COLORS.DARK
+                      : THEME.COLORS.WHITE,
                   borderColor: THEME.COLORS.DARK,
                 }}
+                onPress={() => setSelectedFilter("series")}
               >
                 <Text
                   style={{
                     fontFamily: THEME.FONT_FAMILY.MEDIUM,
                     fontSize: THEME.FONT_SIZE.XS,
-                    color: THEME.COLORS.DARK,
+                    color:
+                      selectedFilter === "series"
+                        ? THEME.COLORS.WHITE
+                        : THEME.COLORS.DARK,
                   }}
                 >
                   Séries
@@ -222,14 +312,22 @@ export function Home() {
                   justifyContent: "center",
                   borderRadius: 26,
                   borderWidth: 1,
+                  backgroundColor:
+                    selectedFilter === "events"
+                      ? THEME.COLORS.DARK
+                      : THEME.COLORS.WHITE,
                   borderColor: THEME.COLORS.DARK,
                 }}
+                onPress={() => setSelectedFilter("events")}
               >
                 <Text
                   style={{
                     fontFamily: THEME.FONT_FAMILY.MEDIUM,
                     fontSize: THEME.FONT_SIZE.XS,
-                    color: THEME.COLORS.DARK,
+                    color:
+                      selectedFilter === "events"
+                        ? THEME.COLORS.WHITE
+                        : THEME.COLORS.DARK,
                   }}
                 >
                   Eventos
@@ -237,25 +335,19 @@ export function Home() {
               </TouchableOpacity>
             </View>
             <FlatList
-              data={dataHeros
-                .slice(0, 22)
-                .filter(
-                  (item) =>
-                    !item.thumbnail.path.includes("/image_not_available") &&
-                    item.description.length > 0
-                )}
+              data={arrFiltered as any}
               keyExtractor={(item) => `${item.id}`}
               renderItem={({ item }) => (
                 <InfoCardHorizontal
                   onPress={() =>
                     handleOpenHeroCard({
-                      title: item.name,
+                      title: item.title,
                       id: `${item.id}`,
                       thumbnail: item.thumbnail,
                     })
                   }
                   data={{
-                    title: item.name.replace(/\([^)]*\)/g, ""),
+                    title: item.title.replace(/\([^)]*\)/g, ""),
                     id: `${item.id}`,
                     thumbnail: item.thumbnail,
                     description: item.description,

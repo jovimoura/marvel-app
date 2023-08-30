@@ -1,4 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
+import { CaretRight } from "phosphor-react-native";
 import { useEffect, useState } from "react";
 import {
   ImageBackground,
@@ -18,7 +19,7 @@ export interface InfoCardProps {
     path: string;
     extension: string;
   };
-  description?: string;
+  description?: string | null;
 }
 
 interface Props extends TouchableOpacityProps {
@@ -34,9 +35,14 @@ export function InfoCardHorizontal({ data, ...rest }: Props) {
       />
       <View style={styles.infoBox}>
         <Text style={styles.name}>{data.title}</Text>
-        <Text numberOfLines={5} style={styles.description}>
-          {data.description}
-        </Text>
+        {data.description && (
+          <Text numberOfLines={5} style={styles.description}>
+            {data.description}
+          </Text>
+        )}
+      </View>
+      <View style={styles.caret}>
+        <CaretRight size={24} color={THEME.COLORS.WHITE} />
       </View>
     </TouchableOpacity>
   );
