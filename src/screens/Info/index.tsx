@@ -30,7 +30,6 @@ export function Info() {
   const [storie, setStorie] = useState<any[]>([]);
 
   useEffect(() => {
-    console.log(`/v1/public/${perfil.type}/${perfil.id}${keys}`);
     api(`/v1/public/${perfil.type}/${perfil.id}${keys}`)
       .then((response) => {
         setStorie(response.data.data.results);

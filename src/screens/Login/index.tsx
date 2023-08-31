@@ -58,6 +58,7 @@ export function Login() {
       setLoading(true);
       try {
         const res = await signInWithEmailAndPassword(auth, email, password);
+        // AsyncStorage.setItem("@marvel-user-id", res.user.uid);
       } catch (error) {
         console.log(error);
         Alert.alert("Error ao logar, por favor verifique seu Email ou senha");
@@ -91,12 +92,11 @@ export function Login() {
             password
           );
           Alert.alert(`Usuário registrado com sucesso!`);
-          AsyncStorage.setItem("@marvel-user-id", res.user.uid);
+          // AsyncStorage.setItem("@marvel-user-id", res.user.uid);
           setViewSignIn(true);
-        } catch (error) {
-          console.log(error);
+        } catch (error: any) {
           Alert.alert(
-            "Ops, tivemos problemas em criar sua conta, tente novamente mais tarde!"
+            "Ops, tivemos problemas em criar sua conta, verifique seu email e senha por favor!"
           );
         } finally {
           setLoading(false);

@@ -83,7 +83,6 @@ export function Home() {
     amountSeries,
     type,
   }: OpenCardProps) {
-    console.log(`Card type: ${type}`);
     if (type === undefined || type !== "hero") {
       navigation.navigate("info", {
         id,
@@ -601,7 +600,6 @@ export function Home() {
           </ScrollView>
         )}
       </View>
-      {/* <Button title='Sign out' onPress={() => FIREBASE_AUTH.signOut()} /> */}
     </SafeAreaView>
   );
 }

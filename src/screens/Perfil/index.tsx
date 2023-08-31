@@ -79,8 +79,6 @@ export function Perfil() {
       });
   }, []);
 
-  console.log("storie", storie);
-
   return (
     <SafeAreaView
       style={{

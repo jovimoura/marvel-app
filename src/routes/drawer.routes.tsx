@@ -4,10 +4,20 @@ import { Config } from "../screens/Config";
 import { StackRoutes } from "./stack.routes";
 
 import { Feather } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { FIREBASE_AUTH } from "../../FirebaseConfig";
 
 const Drawer = createDrawerNavigator();
 
 export function DrawerRoutes() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      setUser(user);
+    });
+  });
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -17,7 +27,7 @@ export function DrawerRoutes() {
       }}
     >
       <Drawer.Screen
-        name='feed'
+        name='Home'
         component={StackRoutes}
         options={{
           drawerIcon: ({ color, size }) => <House color={color} size={size} />,
