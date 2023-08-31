@@ -24,7 +24,9 @@ export function Config() {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
       setUser(user);
     });
-  });
+  }, [user]);
+
+  console.log(user);
 
   return (
     <SafeAreaView style={styles.container}>

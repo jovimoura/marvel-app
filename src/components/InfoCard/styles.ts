@@ -22,6 +22,5 @@ export const styles = StyleSheet.create({
     color: THEME.COLORS.WHITE,
     fontSize: THEME.FONT_SIZE.CARD_TITLE,
     fontFamily: THEME.FONT_FAMILY.MEDIUM,
-    lineHeight: 20,
   },
 });

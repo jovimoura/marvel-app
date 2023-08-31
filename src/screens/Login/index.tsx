@@ -6,9 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
-  ScrollView,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { styles } from "./styles";
 import {
@@ -98,7 +96,7 @@ export function Login() {
           ).then(async (res) => {
             await updateProfile(res.user, {
               displayName: name,
-            });
+            }).catch((err) => console.log("add name error", err));
           });
           Alert.alert(`Usuário registrado com sucesso!`);
           setViewSignIn(true);
