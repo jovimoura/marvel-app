@@ -66,7 +66,7 @@ export function ForgotPassword() {
         >
           <View style={styles.form}>
             <View style={styles.header}>
-              <Text style={styles.title}>Esqueceu sua senha?</Text>
+              <Text style={styles.title}>Criar Nova Senha</Text>
               <Text style={styles.subtitle}>
                 Digite seu e-mail corretamente e enviaremos o código para
                 resetar sua senha!

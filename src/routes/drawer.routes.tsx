@@ -3,10 +3,10 @@ import { Gear, House } from "phosphor-react-native";
 import { Config } from "../screens/Config";
 import { StackRoutes } from "./stack.routes";
 
-import { Feather } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { FIREBASE_AUTH } from "../../FirebaseConfig";
+import { THEME } from "../themes";
 
 const Drawer = createDrawerNavigator();
 
@@ -30,12 +30,14 @@ export function DrawerRoutes() {
         name='Home'
         component={StackRoutes}
         options={{
+          drawerActiveTintColor: THEME.COLORS.RED,
           drawerIcon: ({ color, size }) => <House color={color} size={size} />,
           drawerLabel: "Início",
         }}
       />
       <Drawer.Screen
         options={{
+          drawerActiveTintColor: THEME.COLORS.RED,
           drawerIcon: ({ color, size }) => <Gear color={color} size={size} />,
           drawerLabel: "Configurações",
         }}
