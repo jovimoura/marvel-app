@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import { User } from "phosphor-react-native";
 import { useEffect, useState } from "react";
 import {
   Text,
@@ -14,8 +13,8 @@ import { Character } from "../../@types/characters";
 import { Comic } from "../../@types/comics";
 import { Events } from "../../@types/events";
 import { Series } from "../../@types/series";
-import { MarvelLogo } from "../../components/icons";
-import { InfoCard, InfoCardProps } from "../../components/InfoCard";
+import { MarvelLogo, MenuIcon } from "../../components/icons";
+import { InfoCard } from "../../components/InfoCard";
 import { InfoCardHorizontal } from "../../components/InfoCardHorizontal";
 import { SearchBar } from "../../components/SearchBar";
 import { api } from "../../services/api";
@@ -29,6 +28,7 @@ import {
   eventsEndpoint,
   seriesEndpoint,
 } from "../../services/endpoints";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 
 interface OpenCardProps {
   id: number;
@@ -47,6 +47,7 @@ interface OpenCardProps {
 
 export function Home() {
   const navigation = useNavigation();
+  const navigationDrawer = useNavigation<DrawerNavigationProp<{}>>();
 
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("hero");
@@ -304,8 +305,11 @@ export function Home() {
       >
         <View style={styles.header}>
           {!searchBarOpen && (
-            <TouchableOpacity style={styles.configButton}>
-              <User size={24} weight='bold' />
+            <TouchableOpacity
+              onPress={() => navigationDrawer.openDrawer()}
+              style={styles.configButton}
+            >
+              <MenuIcon />
             </TouchableOpacity>
           )}
           <MarvelLogo color={THEME.COLORS.RED} />

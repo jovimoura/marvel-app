@@ -11,6 +11,8 @@ import { StatusBar } from "expo-status-bar";
 import { Loading } from "./src/components/Loading";
 import { Routes } from "./src/routes";
 
+import "react-native-gesture-handler";
+
 export default function App() {
   const [fontsLoaded] = useFonts({
     Poppins_300Light,

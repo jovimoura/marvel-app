@@ -22,13 +22,6 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
-    shadowColor: "black",
-    shadowOffset: { width: 2, height: 0 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 2,
-    borderBlockColor: "black",
-    borderRadius: 100,
   },
   searchOpenContainer: {
     alignItems: "center",
