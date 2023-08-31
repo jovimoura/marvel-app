@@ -46,7 +46,7 @@ export function Config() {
           <MarvelLogo color={THEME.COLORS.RED} />
         </View>
         <View style={styles.infoBox}>
-          <Text style={styles.subtitle}>Bem vindo, {user?.email}</Text>
+          <Text style={styles.subtitle}>Bem vindo {user?.displayName}</Text>
           <Text style={styles.title}>Configurações</Text>
           <Text style={styles.subtitle}>
             Para criar uma nova senha, clique no botão abaixo e você receberá um

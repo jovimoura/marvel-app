@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     paddingTop: "auto",
   },
   form: {
-    paddingBottom: 40,
+    paddingBottom: 20,
     paddingHorizontal: 30,
     flexDirection: "column",
     alignItems: "center",

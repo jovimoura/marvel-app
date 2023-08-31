@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  ScrollView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -20,14 +21,16 @@ import {
 import { BackgroundImage } from "../../components/BackgroundImage";
 import { Input } from "../../components/Input";
 import { ButtonGradient } from "../../components/ButtonGradient";
-import { FIREBASE_AUTH } from "../../../FirebaseConfig";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "../../../FirebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
 import { THEME } from "../../themes";
 import { useNavigation } from "@react-navigation/native";
+import { collection } from "firebase/firestore";
 
 export function Login() {
   const auth = FIREBASE_AUTH;
@@ -39,6 +42,7 @@ export function Login() {
   const [hidePassword, setHidePassword] = useState(true);
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -91,7 +95,11 @@ export function Login() {
             auth,
             email,
             password
-          );
+          ).then(async (res) => {
+            await updateProfile(res.user, {
+              displayName: name,
+            });
+          });
           Alert.alert(`Usuário registrado com sucesso!`);
           setViewSignIn(true);
         } catch (error: any) {
@@ -206,7 +214,19 @@ export function Login() {
                 <Text style={styles.subtitle}>seja bem-vindo!</Text>
               </View>
               <View style={{ ...styles.boxInput, marginBottom: 12 }}>
-                <Text style={styles.label}>Usuário</Text>
+                <Text style={styles.label}>Nome</Text>
+                <Input
+                  autoCapitalize='characters'
+                  value={name}
+                  onChangeText={setName}
+                  icon='email'
+                  errorMessage='Por favor digite seu nome completo'
+                  showMessageError={showMessageEmailError}
+                  placeholder='Digite seu nome completo'
+                />
+              </View>
+              <View style={{ ...styles.boxInput, marginBottom: 12 }}>
+                <Text style={styles.label}>E-mail</Text>
                 <Input
                   autoCapitalize='none'
                   value={email}
@@ -232,21 +252,23 @@ export function Login() {
                   secureTextEntry={hidePassword}
                 />
               </View>
-              <View style={styles.boxInput}>
-                <Text style={styles.label}>Senha</Text>
-                <Input
-                  autoCapitalize='none'
-                  value={confirmPassword}
-                  onChangeText={setConfirmPassword}
-                  icon='password'
-                  type='password'
-                  errorMessage='Senhas diferentes, por favor digite novamente'
-                  showMessageError={showMessageConfirmPasswordError}
-                  placeholder='Confirme sua senha aqui...'
-                  eyePress={() => setHideConfirmPassword(!hidePassword)}
-                  secureTextEntry={hideConfirmPassword}
-                />
-              </View>
+              {password.length > 0 && (
+                <View style={styles.boxInput}>
+                  <Text style={styles.label}>Confirmar Senha</Text>
+                  <Input
+                    autoCapitalize='none'
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    icon='password'
+                    type='password'
+                    errorMessage='Senhas diferentes, por favor digite novamente'
+                    showMessageError={showMessageConfirmPasswordError}
+                    placeholder='Confirme sua senha aqui...'
+                    eyePress={() => setHideConfirmPassword(!hidePassword)}
+                    secureTextEntry={hideConfirmPassword}
+                  />
+                </View>
+              )}
               <ButtonGradient
                 colorLoading={THEME.COLORS.WHITE}
                 isLoading={loading}
