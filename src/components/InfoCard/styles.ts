@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
   name: {
     color: THEME.COLORS.WHITE,
     fontSize: THEME.FONT_SIZE.CARD_TITLE,
-    fontFamily: THEME.FONT_FAMILY.BOLD,
+    fontFamily: THEME.FONT_FAMILY.MEDIUM,
+    lineHeight: 20,
   },
 });

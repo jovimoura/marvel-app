@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { FIREBASE_AUTH } from "../../FirebaseConfig";
+import { ForgotPassword } from "../screens/ForgotPassword";
 import { Home } from "../screens/Home";
 import { Info } from "../screens/Info";
 import { Login } from "../screens/Login";
@@ -27,7 +28,10 @@ export function StackRoutes() {
           <Stack.Screen name='info' component={Info} />
         </>
       ) : (
-        <Stack.Screen name='Login' component={Login} />
+        <>
+          <Stack.Screen name='login' component={Login} />
+          <Stack.Screen name='forgotPassword' component={ForgotPassword} />
+        </>
       )}
     </Stack.Navigator>
   );

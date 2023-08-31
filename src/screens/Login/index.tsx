@@ -27,10 +27,12 @@ import {
 } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
 import { THEME } from "../../themes";
+import { useNavigation } from "@react-navigation/native";
 
 export function Login() {
   const auth = FIREBASE_AUTH;
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const navigation = useNavigation();
 
   const [viewSignIn, setViewSignIn] = useState(true);
 
@@ -58,7 +60,6 @@ export function Login() {
       setLoading(true);
       try {
         const res = await signInWithEmailAndPassword(auth, email, password);
-        // AsyncStorage.setItem("@marvel-user-id", res.user.uid);
       } catch (error) {
         console.log(error);
         Alert.alert("Error ao logar, por favor verifique seu Email ou senha");
@@ -92,7 +93,6 @@ export function Login() {
             password
           );
           Alert.alert(`Usuário registrado com sucesso!`);
-          // AsyncStorage.setItem("@marvel-user-id", res.user.uid);
           setViewSignIn(true);
         } catch (error: any) {
           Alert.alert(
@@ -154,6 +154,7 @@ export function Login() {
                   secureTextEntry={hidePassword}
                 />
                 <TouchableOpacity
+                  onPress={() => navigation.navigate("forgotPassword")}
                   style={{ alignSelf: "flex-end", marginTop: 4 }}
                 >
                   <Text style={styles.text}>Esqueceu a senha?</Text>

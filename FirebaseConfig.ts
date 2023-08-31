@@ -18,3 +18,10 @@ export const FIREBASE_AUTH = initializeAuth(FIREBASE_APP, {
   persistence: getReactNativePersistence(AsyncStorage),
 });
 export const FIRESTORE_DB = getFirestore(FIREBASE_APP);
+
+/**
+ *
+ * Persistence problems on 10.3.0 firebae
+ *
+ * https://stackoverflow.com/questions/76914913/cannot-import-getreactnativepersistence-in-firebase10-1-0
+ */

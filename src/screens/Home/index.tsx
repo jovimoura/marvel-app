@@ -442,7 +442,7 @@ export function Home() {
                     }}
                   />
                 )}
-                showsHorizontalScrollIndicator={true}
+                showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.contentListHorizontal}
                 scrollEnabled={false}
               />
@@ -492,7 +492,7 @@ export function Home() {
                   />
                 )}
                 horizontal
-                showsHorizontalScrollIndicator={true}
+                showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.contentList}
               />
             </View>

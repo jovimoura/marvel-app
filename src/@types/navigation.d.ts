@@ -33,6 +33,7 @@ export declare global {
       home: undefined;
       search: string;
       login: LoginPageParams | undefined;
+      forgotPassword: undefined;
       perfil: PerfilPageParams;
       info: InfoPageParams;
     }
