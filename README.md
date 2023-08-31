@@ -64,7 +64,6 @@ exp://192.168.0.12:19000
 
 <br />
 
-## Image of project
 
 <br />
 
