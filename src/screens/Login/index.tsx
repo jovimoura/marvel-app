@@ -216,7 +216,7 @@ export function Login() {
               <View style={{ ...styles.boxInput, marginBottom: 12 }}>
                 <Text style={styles.label}>Nome</Text>
                 <Input
-                  autoCapitalize='characters'
+                  autoCapitalize='words'
                   value={name}
                   onChangeText={setName}
                   icon='email'
