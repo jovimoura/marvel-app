@@ -26,8 +26,6 @@ export function Config() {
     });
   }, [user]);
 
-  console.log(user);
-
   return (
     <SafeAreaView style={styles.container}>
       <View

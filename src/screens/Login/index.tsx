@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   TouchableOpacity,
@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  Keyboard,
 } from "react-native";
 
 import { styles } from "./styles";
@@ -28,7 +29,6 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { THEME } from "../../themes";
 import { useNavigation } from "@react-navigation/native";
-import { collection } from "firebase/firestore";
 
 export function Login() {
   const auth = FIREBASE_AUTH;
@@ -115,6 +115,25 @@ export function Login() {
     }
   }
 
+  const [keyboardClosed, setKeyboardClosed] = useState(true);
+  useEffect(() => {
+    let keyboardEventListeners: any;
+    if (Platform.OS === "android") {
+      keyboardEventListeners = [
+        Keyboard.addListener("keyboardDidShow", () => setKeyboardClosed(false)),
+        Keyboard.addListener("keyboardDidHide", () => setKeyboardClosed(true)),
+      ];
+    }
+    return () => {
+      if (Platform.OS === "android") {
+        keyboardEventListeners &&
+          keyboardEventListeners.forEach((eventListener: any) =>
+            eventListener.remove()
+          );
+      }
+    };
+  }, []);
+
   return (
     <BackgroundImage
       bgImg={require("../../assets/backgrounds/bg-black-panther.png")}
@@ -166,44 +185,50 @@ export function Login() {
                   <Text style={styles.text}>Esqueceu a senha?</Text>
                 </TouchableOpacity>
               </View>
-              <ButtonGradient
-                colorLoading={THEME.COLORS.WHITE}
-                isLoading={loading}
-                label='Entrar'
-                disabled={loading}
-                onPress={signIn}
-              />
-              <View style={styles.socialLabel}>
-                <Line />
-                <Text style={styles.text}>Faça login com</Text>
-                <Line right />
-              </View>
-              <View style={styles.socialBox}>
-                <TouchableOpacity style={styles.socialButton}>
-                  <GoogleIcon />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.socialButton}>
-                  <AppleIcon />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.socialButton}>
-                  <FacebookIcon />
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  width: "100%",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "row",
-                  gap: 4,
-                  marginTop: 12,
-                }}
-              >
-                <Text style={{ ...styles.text, fontSize: 16 }}>Novo aqui?</Text>
-                <TouchableOpacity onPress={() => setViewSignIn(false)}>
-                  <Text style={styles.register}>Cadastre-se</Text>
-                </TouchableOpacity>
-              </View>
+              {keyboardClosed && (
+                <>
+                  <ButtonGradient
+                    colorLoading={THEME.COLORS.WHITE}
+                    isLoading={loading}
+                    label='Entrar'
+                    disabled={loading}
+                    onPress={signIn}
+                  />
+                  <View style={styles.socialLabel}>
+                    <Line />
+                    <Text style={styles.text}>Faça login com</Text>
+                    <Line right />
+                  </View>
+                  <View style={styles.socialBox}>
+                    <TouchableOpacity style={styles.socialButton}>
+                      <GoogleIcon />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.socialButton}>
+                      <AppleIcon />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.socialButton}>
+                      <FacebookIcon />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      width: "100%",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "row",
+                      gap: 4,
+                      marginTop: 12,
+                    }}
+                  >
+                    <Text style={{ ...styles.text, fontSize: 16 }}>
+                      Novo aqui?
+                    </Text>
+                    <TouchableOpacity onPress={() => setViewSignIn(false)}>
+                      <Text style={styles.register}>Cadastre-se</Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
             </View>
           ) : (
             <View style={styles.form}>
@@ -267,30 +292,34 @@ export function Login() {
                   />
                 </View>
               )}
-              <ButtonGradient
-                colorLoading={THEME.COLORS.WHITE}
-                isLoading={loading}
-                disabled={loading}
-                label='Criar conta'
-                onPress={signUp}
-              />
-              <View
-                style={{
-                  width: "100%",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
-                  flexDirection: "row",
-                  gap: 4,
-                  marginTop: 4,
-                }}
-              >
-                <Text style={{ ...styles.text, fontSize: 16 }}>
-                  Já possui conta?
-                </Text>
-                <TouchableOpacity onPress={() => setViewSignIn(true)}>
-                  <Text style={styles.register}>Faça o login</Text>
-                </TouchableOpacity>
-              </View>
+              {keyboardClosed && (
+                <>
+                  <ButtonGradient
+                    colorLoading={THEME.COLORS.WHITE}
+                    isLoading={loading}
+                    disabled={loading}
+                    label='Criar conta'
+                    onPress={signUp}
+                  />
+                  <View
+                    style={{
+                      width: "100%",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                      flexDirection: "row",
+                      gap: 4,
+                      marginTop: 4,
+                    }}
+                  >
+                    <Text style={{ ...styles.text, fontSize: 16 }}>
+                      Já possui conta?
+                    </Text>
+                    <TouchableOpacity onPress={() => setViewSignIn(true)}>
+                      <Text style={styles.register}>Faça o login</Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
             </View>
           )}
         </BackgroundImage>
