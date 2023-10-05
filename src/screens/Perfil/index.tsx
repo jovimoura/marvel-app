@@ -1,6 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { addDoc,deleteDoc, collection, onSnapshot, doc } from "firebase/firestore";
+import { Star } from "phosphor-react-native";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
@@ -11,6 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "../../../FirebaseConfig";
 import { Comic } from "../../@types/comics";
 import { PerfilPageParams } from "../../@types/navigation";
 import { Story } from "../../@types/storie";
@@ -37,6 +41,8 @@ export function Perfil() {
   const route = useRoute();
   const perfil = route.params as PerfilPageParams;
 
+  const [user, setUser] = useState<User | null>(null);
+
   const navigation = useNavigation();
 
   const [nickname, realNameWithParenteses] = perfil.title.split(" (");
@@ -44,6 +50,8 @@ export function Perfil() {
 
   const [storie, setStorie] = useState<Story[]>([]);
   const [comics, setComics] = useState<Comic[]>([]);
+
+  const [favorites, setFavorites] = useState<any[]>([]);
 
   function handleOpenInfoCard({
     id,
@@ -61,6 +69,44 @@ export function Perfil() {
     });
   }
 
+  function verificaIdHeroNoArray(array: any[], idHeroDesejado: number) {
+    for (const item of array) {
+      if (item.idHero === idHeroDesejado) {
+        return "fill";
+      }
+    }
+    return "regular";
+  }
+
+  function handleStar(state: string) {
+    if (state === "regular") {
+      handleFav()
+    } else {
+      handleUnFav()
+    }
+  }
+
+  function handleUnFav() {
+    const favorite = favorites.filter(item => item.idUser === user?.uid && item.idHero === perfil.id)[0];
+
+    const ref = doc(FIRESTORE_DB, `favoriteHeroes/${favorite.id}`)
+    deleteDoc(ref)
+  }
+  
+  function handleFav() {
+    const doc = addDoc(collection(FIRESTORE_DB, `favoriteHeroes`), {
+      idUser: user?.uid,
+      idHero: perfil.id,
+      title: perfil.title,
+    });
+  }
+
+  useEffect(() => {
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      setUser(user);
+    });
+  }, [user]);
+
   useEffect(() => {
     api(`/v1/public/characters/${perfil.id}/stories${keys}`)
       .then((response) => {
@@ -77,7 +123,23 @@ export function Perfil() {
       .catch((err) => {
         console.error("err perfil", err);
       });
+
+    const favRef = collection(FIRESTORE_DB, "favoriteHeroes");
+    const subscriber = onSnapshot(favRef, {
+      next: (snapshot) => {
+        const favs: any[] = [];
+        snapshot.docs.forEach((doc) => {
+          favs.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+        setFavorites(favs);
+      },
+    });
   }, []);
+
+  console.log("favs", favorites);
 
   return (
     <SafeAreaView
@@ -122,6 +184,16 @@ export function Perfil() {
                 style={{ position: "absolute", left: 28 }}
               >
                 <ArrowBackIcon color={THEME.COLORS.WHITE} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleStar(verificaIdHeroNoArray(favorites, perfil.id))}
+                style={{ position: "absolute", right: 28 }}
+              >
+                <Star
+                  size={24}
+                  weight={verificaIdHeroNoArray(favorites, perfil.id)}
+                  color={THEME.COLORS.WHITE}
+                />
               </TouchableOpacity>
             </View>
             <View
