@@ -62,4 +62,11 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
   },
   buttonLabel: { color: THEME.COLORS.RED, fontSize: 20, fontWeight: "500" },
+  footer: {
+    fontSize: THEME.FONT_SIZE.HOME_SUBTITLE,
+    color: THEME.COLORS.GRAY,
+    fontFamily: THEME.FONT_FAMILY.SEMI_BOLD,
+    alignSelf: "center",
+    textDecorationLine: 'underline',
+  },
 });

@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { onAuthStateChanged, User } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { A } from "@expo/html-elements";
 import { FIREBASE_AUTH } from "../../../FirebaseConfig";
 import { MarvelLogo, MenuIcon } from "../../components/icons";
 import { THEME } from "../../themes";
@@ -55,6 +56,12 @@ export function Config() {
         <View style={{ marginTop: "auto", width: "100%", gap: 20 }}>
           <TouchableOpacity style={styles.button} onPress={handleSignOut}>
             <Text style={styles.buttonLabel}>Sair</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.footer}>
+              Desenvolvido por{" "}
+              <A href='https://www.linkedin.com/in/jovimoura10/'>John</A>
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
