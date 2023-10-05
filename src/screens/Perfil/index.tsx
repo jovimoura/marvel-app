@@ -98,6 +98,7 @@ export function Perfil() {
       idUser: user?.uid,
       idHero: perfil.id,
       title: perfil.title,
+      image: perfil.thumbnail
     });
   }
 
@@ -138,8 +139,6 @@ export function Perfil() {
       },
     });
   }, []);
-
-  console.log("favs", favorites);
 
   return (
     <SafeAreaView
