@@ -66,8 +66,10 @@ export const styles = StyleSheet.create({
   },
   socialButton: {
     backgroundColor: "rgba(255, 255, 255, 0.05)",
-    width: 58,
+    width: '100%',
     height: 44,
+    flexDirection: 'row',
+    gap: 4,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 8,

@@ -20,7 +20,7 @@ import {
 import { BackgroundImage } from "../../components/BackgroundImage";
 import { Input } from "../../components/Input";
 import { ButtonGradient } from "../../components/ButtonGradient";
-import { FIREBASE_AUTH, FIRESTORE_DB } from "../../../FirebaseConfig";
+import { FIREBASE_AUTH } from "../../../FirebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -150,7 +150,7 @@ export function Login() {
             <View style={styles.form}>
               <View style={styles.header}>
                 <Text style={styles.title}>Faça login</Text>
-                <Text style={styles.subtitle}>seja bem-vindo novamente.</Text>
+                <Text style={styles.subtitle}>Seja bem-vindo novamente.</Text>
               </View>
               <View style={{ ...styles.boxInput, marginBottom: 12 }}>
                 <Text style={styles.label}>Usuário</Text>
@@ -202,12 +202,7 @@ export function Login() {
                   <View style={styles.socialBox}>
                     <TouchableOpacity style={styles.socialButton}>
                       <GoogleIcon />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.socialButton}>
-                      <AppleIcon />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.socialButton}>
-                      <FacebookIcon />
+                      <Text style={styles.text}>Faça o login com Google</Text>
                     </TouchableOpacity>
                   </View>
                   <View
@@ -234,7 +229,7 @@ export function Login() {
             <View style={styles.form}>
               <View style={styles.header}>
                 <Text style={styles.title}>Criar Conta</Text>
-                <Text style={styles.subtitle}>seja bem-vindo!</Text>
+                <Text style={styles.subtitle}>Seja bem-vindo!</Text>
               </View>
               <View style={{ ...styles.boxInput, marginBottom: 12 }}>
                 <Text style={styles.label}>Nome</Text>

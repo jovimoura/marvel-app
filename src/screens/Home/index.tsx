@@ -8,7 +8,6 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { FIREBASE_AUTH } from "../../../FirebaseConfig";
 import { Character } from "../../@types/characters";
 import { Comic } from "../../@types/comics";
 import { Events } from "../../@types/events";
@@ -451,7 +450,7 @@ export function Home() {
         ) : (
           <ScrollView contentContainerStyle={styles.homeContainer}>
             <View style={styles.infoBox}>
-              <Text style={styles.subtitle}>Bem vindo ao Pontua Marvel</Text>
+              <Text style={styles.subtitle}>Bem vindo ao Marvel Fans!</Text>
               <Text style={styles.title}>Escolha o seu personagem</Text>
               <Text style={styles.subtitle}>
                 O Universo Marvel é o universo compartilhado onde ocorrem as

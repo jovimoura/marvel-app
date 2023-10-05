@@ -49,8 +49,7 @@ export function Config() {
           <Text style={styles.subtitle}>Bem vindo {user?.displayName}</Text>
           <Text style={styles.title}>Configurações</Text>
           <Text style={styles.subtitle}>
-            Para criar uma nova senha, clique no botão abaixo e você receberá um
-            link para resetar sua senha.
+            Para deslogar do app, clique no botão de sair abaixo.
           </Text>
         </View>
         <View style={{ marginTop: "auto", width: "100%", gap: 20 }}>
