@@ -130,7 +130,7 @@ export function Info() {
                     marginBottom: 48,
                   }}
                 >
-                  storie[0]?.variantDescription
+                  {storie[0]?.variantDescription}
                 </Text>
               )}
               {perfil?.description && (
