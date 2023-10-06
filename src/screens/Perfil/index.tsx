@@ -2,7 +2,13 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { addDoc,deleteDoc, collection, onSnapshot, doc } from "firebase/firestore";
+import {
+  addDoc,
+  deleteDoc,
+  collection,
+  onSnapshot,
+  doc,
+} from "firebase/firestore";
 import { Star } from "phosphor-react-native";
 import React, { useEffect, useState } from "react";
 import {
@@ -80,25 +86,27 @@ export function Perfil() {
 
   function handleStar(state: string) {
     if (state === "regular") {
-      handleFav()
+      handleFav();
     } else {
-      handleUnFav()
+      handleUnFav();
     }
   }
 
   function handleUnFav() {
-    const favorite = favorites.filter(item => item.idUser === user?.uid && item.idHero === perfil.id)[0];
+    const favorite = favorites.filter(
+      (item) => item.idUser === user?.uid && item.idHero === perfil.id
+    )[0];
 
-    const ref = doc(FIRESTORE_DB, `favoriteHeroes/${favorite.id}`)
-    deleteDoc(ref)
+    const ref = doc(FIRESTORE_DB, `favoriteHeroes/${favorite.id}`);
+    deleteDoc(ref);
   }
-  
+
   function handleFav() {
     const doc = addDoc(collection(FIRESTORE_DB, `favoriteHeroes`), {
       idUser: user?.uid,
       idHero: perfil.id,
       title: perfil.title,
-      image: perfil.thumbnail
+      image: perfil.thumbnail,
     });
   }
 
@@ -185,7 +193,9 @@ export function Perfil() {
                 <ArrowBackIcon color={THEME.COLORS.WHITE} />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => handleStar(verificaIdHeroNoArray(favorites, perfil.id))}
+                onPress={() =>
+                  handleStar(verificaIdHeroNoArray(favorites, perfil.id))
+                }
                 style={{ position: "absolute", right: 28 }}
               >
                 <Star

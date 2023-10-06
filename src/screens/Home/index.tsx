@@ -310,7 +310,7 @@ export function Home() {
               <MenuIcon />
             </TouchableOpacity>
           )}
-          <MarvelLogo color={THEME.COLORS.RED} />
+          <MarvelLogo color={!searchBarOpen ? THEME.COLORS.RED : THEME.COLORS.WHITE} />
           <View
             style={{ position: "absolute", right: searchBarOpen ? 28 : 56 }}
           >

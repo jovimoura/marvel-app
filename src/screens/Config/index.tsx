@@ -60,7 +60,7 @@ export function Config() {
           <TouchableOpacity>
             <Text style={styles.footer}>
               Desenvolvido por{" "}
-              <A href='https://www.linkedin.com/in/jovimoura10/'>John</A>
+              <A href='https://www.linkedin.com/in/jovimoura10/'>John Moura</A>
             </Text>
           </TouchableOpacity>
         </View>

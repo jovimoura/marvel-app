@@ -1,5 +1,5 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Gear, House } from "phosphor-react-native";
+import { Gear, House, Star } from "phosphor-react-native";
 import { Config } from "../screens/Config";
 import { StackRoutes } from "./stack.routes";
 
@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { FIREBASE_AUTH } from "../../FirebaseConfig";
 import { THEME } from "../themes";
+import { Favorites } from "../screens/Favorites";
+import { FavoriteStackRoutes } from "./favorites-stack.routes";
 
 const Drawer = createDrawerNavigator();
 
@@ -33,6 +35,15 @@ export function DrawerRoutes() {
           drawerActiveTintColor: THEME.COLORS.RED,
           drawerIcon: ({ color, size }) => <House color={color} size={size} />,
           drawerLabel: "Início",
+        }}
+      />
+      <Drawer.Screen
+        name='Favorites'
+        component={FavoriteStackRoutes}
+        options={{
+          drawerActiveTintColor: THEME.COLORS.RED,
+          drawerIcon: ({ color, size }) => <Star color={color} size={size} />,
+          drawerLabel: "Favoritos",
         }}
       />
       <Drawer.Screen

@@ -11,7 +11,7 @@ import { Perfil } from "../screens/Perfil";
 
 const Stack = createNativeStackNavigator();
 
-export function StackRoutes() {
+export function FavoriteStackRoutes() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function StackRoutes() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
         <>
-          <Stack.Screen name='home' component={Home} />
+          <Stack.Screen name='favorites' component={Favorites} />
           <Stack.Screen name='perfil' component={Perfil} />
           <Stack.Screen name='info' component={Info} />
         </>

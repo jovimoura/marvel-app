@@ -1,6 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { addDoc, collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import { Star } from "phosphor-react-native";
 import React, { useEffect, useState } from "react";
 import {
   ImageBackground,
@@ -10,12 +13,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "../../../FirebaseConfig";
 import { InfoPageParams } from "../../@types/navigation";
 import { ArrowBackIcon } from "../../components/icons";
 
 import { api } from "../../services/api";
 import { keys } from "../../services/endpoints";
 import { THEME } from "../../themes";
+import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
 
 import { styles } from "./styles";
 
@@ -23,11 +28,54 @@ export function Info() {
   const route = useRoute();
   const perfil = route.params as InfoPageParams;
 
+  const [user, setUser] = useState<User | null>(null);
+
   const navigation = useNavigation();
 
   const [nickname, realNameWithParenteses] = perfil.title.split(" (");
   const realName = realNameWithParenteses?.replace(")", "");
   const [storie, setStorie] = useState<any[]>([]);
+
+  const [favorites, setFavorites] = useState<any[]>([]);
+
+  function verificaIdNoArray(array: any[], idDesejado: number) {
+    for (const item of array) {
+      if (item.id === idDesejado) {
+        return "fill";
+      }
+    }
+    return "regular";
+  }
+
+  function handleStar(state: string) {
+    if (state === "regular") {
+      handleFav();
+    } else {
+      handleUnFav();
+    }
+  }
+
+  function handleUnFav() {
+    if (perfil.type) {
+      const favorite = favorites.filter(
+        (item) => item.idUser === user?.uid && item.id === perfil.id
+      )[0];
+  
+      const ref = doc(FIRESTORE_DB, `favorite${capitalizeFirstLetter(perfil.type)}/${favorite.id}`);
+      deleteDoc(ref);
+    }
+  }
+
+  function handleFav() {
+    if (perfil.type) {
+      const doc = addDoc(collection(FIRESTORE_DB, `favorite${capitalizeFirstLetter(perfil.type)}`), {
+        idUser: user?.uid,
+        id: perfil.id,
+        title: perfil.title,
+        image: perfil.thumbnail,
+      });
+    }
+  }
 
   useEffect(() => {
     api(`/v1/public/${perfil.type}/${perfil.id}${keys}`)
@@ -37,7 +85,29 @@ export function Info() {
       .catch((err) => {
         console.error("err perfil", err);
       });
+
+    if (perfil.type) {
+      const favRef = collection(FIRESTORE_DB, `favorite${capitalizeFirstLetter(perfil.type)}`);
+      const subscriber = onSnapshot(favRef, {
+        next: (snapshot) => {
+          const favs: any[] = [];
+          snapshot.docs.forEach((doc) => {
+            favs.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          });
+          setFavorites(favs);
+        },
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      setUser(user);
+    });
+  }, [user]);
 
   return (
     <SafeAreaView
@@ -82,6 +152,18 @@ export function Info() {
                 style={{ position: "absolute", left: 28 }}
               >
                 <ArrowBackIcon color={THEME.COLORS.WHITE} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  handleStar(verificaIdNoArray(favorites, perfil.id))
+                }
+                style={{ position: "absolute", right: 28 }}
+              >
+                <Star
+                  size={24}
+                  weight={verificaIdNoArray(favorites, perfil.id)}
+                  color={THEME.COLORS.WHITE}
+                />
               </TouchableOpacity>
             </View>
             <View
