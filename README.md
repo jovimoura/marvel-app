@@ -60,16 +60,6 @@ npx expo start
 exp://192.168.0.12:19000
 ```
 
-<br />
-
-
-<br />
-
-<video controls>
-  <source src="./src/assets/readme/marvel.mp4" type="video/mp4">
-  Seu navegador não suporta o formato de vídeo.
-</video>
-
 ## Tecnologias e Libs:
 
 <ul>
