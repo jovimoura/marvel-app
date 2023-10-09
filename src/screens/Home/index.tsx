@@ -465,7 +465,7 @@ export function Home() {
                 style={{
                   justifyContent: "space-between",
                   flexDirection: "row",
-                  paddingRight: 24
+                  paddingRight: 24,
                 }}
               >
                 <Text style={styles.listBoxTitle}>Heróis</Text>
@@ -473,10 +473,10 @@ export function Home() {
                   onPress={() =>
                     navigation.navigate("seeall", { type: "heroes" })
                   }
-                  style={{flexDirection: "row", gap: 4}}
+                  style={{ flexDirection: "row", gap: 4 }}
                 >
                   <Text style={styles.listBoxTitle}>Ver tudo</Text>
-                  <ArrowRightIcon color={THEME.COLORS.RED}/>
+                  <ArrowRightIcon color={THEME.COLORS.RED} />
                 </TouchableOpacity>
               </View>
               <FlatList
@@ -515,7 +515,24 @@ export function Home() {
               />
             </View>
             <View style={styles.listBox}>
-              <Text style={styles.listBoxTitle}>Quadrinhos</Text>
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  paddingRight: 24,
+                }}
+              >
+                <Text style={styles.listBoxTitle}>Quadrinhos</Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("seeall", { type: "comics" })
+                  }
+                  style={{ flexDirection: "row", gap: 4 }}
+                >
+                  <Text style={styles.listBoxTitle}>Ver tudo</Text>
+                  <ArrowRightIcon color={THEME.COLORS.RED} />
+                </TouchableOpacity>
+              </View>
               <FlatList
                 data={dataComics
                   .slice(0, 22)
@@ -550,7 +567,24 @@ export function Home() {
               />
             </View>
             <View style={styles.listBox}>
-              <Text style={styles.listBoxTitle}>Séries</Text>
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  paddingRight: 24,
+                }}
+              >
+                <Text style={styles.listBoxTitle}>Séries</Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("seeall", { type: "series" })
+                  }
+                  style={{ flexDirection: "row", gap: 4 }}
+                >
+                  <Text style={styles.listBoxTitle}>Ver tudo</Text>
+                  <ArrowRightIcon color={THEME.COLORS.RED} />
+                </TouchableOpacity>
+              </View>
               <FlatList
                 data={dataSeries
                   .slice(0, 22)
@@ -583,7 +617,25 @@ export function Home() {
               />
             </View>
             <View style={styles.listBox}>
-              <Text style={styles.listBoxTitle}>Eventos</Text>
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  paddingRight: 24,
+                }}
+              >
+                <Text style={styles.listBoxTitle}>Eventos</Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("seeall", { type: "events" })
+                  }
+                  style={{ flexDirection: "row", gap: 4 }}
+                >
+                  <Text style={styles.listBoxTitle}>Ver tudo</Text>
+                  <ArrowRightIcon color={THEME.COLORS.RED} />
+                </TouchableOpacity>
+              </View>
+
               <FlatList
                 data={dataEvents
                   .slice(0, 22)

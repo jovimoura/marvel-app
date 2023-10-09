@@ -12,8 +12,7 @@ import { Character } from "../../@types/characters";
 import { Comic } from "../../@types/comics";
 import { Events } from "../../@types/events";
 import { Series } from "../../@types/series";
-import { MarvelLogo, MenuIcon } from "../../components/icons";
-import { InfoCard } from "../../components/InfoCard";
+import { ArrowBackIcon, MarvelLogo, MenuIcon } from "../../components/icons";
 import { InfoCardHorizontal } from "../../components/InfoCardHorizontal";
 import { SearchBar } from "../../components/SearchBar";
 import { api } from "../../services/api";
@@ -50,8 +49,6 @@ export function SeeAll() {
 
   const route = useRoute();
   const perfil = route.params as SeeAllPageParams;
-
-  const navigationDrawer = useNavigation<DrawerNavigationProp<{}>>();
 
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("hero");
@@ -197,27 +194,31 @@ export function SeeAll() {
   function renderItems() {
     switch (perfil.type) {
       case "heroes":
-        const heroes = dataHeros.map(({ name, ...rest }) => ({
+        const heroes = dataHeros.filter(item => !item.thumbnail.path.includes("/image_not_available")).map(({ name, description, ...rest }) => ({
           typeArr: "heroes",
+          description: description.length > 0 ? description : '...',
           title: name,
           ...rest,
         }));
         return heroes;
       case "comics":
-        const comics = dataComics.map(({ ...rest }) => ({
+        const comics = dataComics.filter(item => !item.thumbnail.path.includes("/image_not_available")).map(({ description, ...rest }) => ({
           typeArr: "comics",
+          description: description ? description : '...',
           ...rest,
         }));
         return comics;
       case "events":
-        const events = dataEvents.map(({ ...rest }) => ({
+        const events = dataEvents.filter(item => !item.thumbnail.path.includes("/image_not_available")).map(({ description,...rest }) => ({
           typeArr: "events",
+          description: description ? description : '...',
           ...rest,
         }));
         return events;
       case "series":
-        const series = dataSeries.map(({ ...rest }) => ({
+        const series = dataSeries.filter(item => !item.thumbnail.path.includes("/image_not_available")).map(({ description,...rest }) => ({
           typeArr: "series",
+          description: description ? description : '...',
           ...rest,
         }));
         return series;
@@ -363,10 +364,10 @@ export function SeeAll() {
         <View style={styles.header}>
           {!searchBarOpen && (
             <TouchableOpacity
-              onPress={() => navigationDrawer.openDrawer()}
+              onPress={() => navigation.goBack()}
               style={styles.configButton}
             >
-              <MenuIcon />
+              <ArrowBackIcon />
             </TouchableOpacity>
           )}
           <MarvelLogo
@@ -511,50 +512,32 @@ export function SeeAll() {
         ) : (
           <ScrollView contentContainerStyle={styles.homeContainer}>
             <FlatList
-                data={renderItems() as any}
-                keyExtractor={(item) => `${item.id}`}
-                renderItem={({ item }) => (
-                  <InfoCard
-                key={item.id}
-                onPress={() =>
-                  handleOpenInfoCard({
+              data={renderItems() as any}
+              keyExtractor={(item) => `${item.id}`}
+              renderItem={({ item }) => (
+                <InfoCardHorizontal
+                  key={item.id}
+                  onPress={() =>
+                    handleOpenInfoCard({
+                      title: item.title,
+                      id: item.id,
+                      thumbnail: item.thumbnail,
+                      description: item.description,
+                      type: item.typeArr,
+                    })
+                  }
+                  data={{
                     title: item.title,
                     id: item.id,
                     thumbnail: item.thumbnail,
                     description: item.description,
-                    type: item.typeArr,
-                  })
-                }
-                data={{
-                  title: item.title,
-                  id: item.id,
-                  thumbnail: item.thumbnail,
-                }}
-              />
-                )}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.contentListHorizontal}
-                scrollEnabled={false}
-              />
-            {/* {renderItems()?.map((item) => (
-              <InfoCard
-                key={item.id}
-                onPress={() =>
-                  handleOpenInfoCard({
-                    title: item.title,
-                    id: item.id,
-                    thumbnail: item.thumbnail,
-                    description: item.description,
-                    type: item.typeArr,
-                  })
-                }
-                data={{
-                  title: item.title,
-                  id: item.id,
-                  thumbnail: item.thumbnail,
-                }}
-              />
-            ))} */}
+                  }}
+                />
+              )}
+              showsHorizontalScrollIndicator={true}
+              contentContainerStyle={styles.contentListHorizontal}
+              scrollEnabled
+            />
           </ScrollView>
         )}
       </View>

@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+    width: "100%",
   },
   header: {
     alignItems: "center",
@@ -60,12 +61,9 @@ export const styles = StyleSheet.create({
   homeContainer: {
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingBottom: 80,
+    paddingBottom: 180,
     width: "100%",
     gap: 8,
-    paddingHorizontal: 24,
-    marginBottom: 28,
-    flexWrap: 'wrap',
   },
   infoBox: {
     flexDirection: "column",
@@ -107,6 +105,6 @@ export const styles = StyleSheet.create({
   contentListHorizontal: {
     maxWidth: "100%",
     width: "100%",
-    flex: 1
+    flex: 1,
   },
 });
