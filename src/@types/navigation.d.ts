@@ -16,6 +16,10 @@ interface PerfilPageParams {
   amountComics?: number | undefined;
 }
 
+interface SeeAllPageParams {
+  type: "comics" | "heroes" | "series" | "events";
+}
+
 interface InfoPageParams {
   id: number;
   title: string;
@@ -36,6 +40,7 @@ export declare global {
       forgotPassword: undefined;
       perfil: PerfilPageParams;
       info: InfoPageParams;
+      seeall: SeeAllPageParams
     }
   }
 }

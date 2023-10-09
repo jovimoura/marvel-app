@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import {
   Text,
@@ -12,7 +12,7 @@ import { Character } from "../../@types/characters";
 import { Comic } from "../../@types/comics";
 import { Events } from "../../@types/events";
 import { Series } from "../../@types/series";
-import { ArrowRightIcon, MarvelLogo, MenuIcon } from "../../components/icons";
+import { MarvelLogo, MenuIcon } from "../../components/icons";
 import { InfoCard } from "../../components/InfoCard";
 import { InfoCardHorizontal } from "../../components/InfoCardHorizontal";
 import { SearchBar } from "../../components/SearchBar";
@@ -28,6 +28,7 @@ import {
   seriesEndpoint,
 } from "../../services/endpoints";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { SeeAllPageParams } from "../../@types/navigation";
 
 interface OpenCardProps {
   id: number;
@@ -44,8 +45,12 @@ interface OpenCardProps {
   amountComics?: number | undefined;
 }
 
-export function Home() {
+export function SeeAll() {
   const navigation = useNavigation();
+
+  const route = useRoute();
+  const perfil = route.params as SeeAllPageParams;
+
   const navigationDrawer = useNavigation<DrawerNavigationProp<{}>>();
 
   const [searchBarOpen, setSearchBarOpen] = useState(false);
@@ -189,106 +194,160 @@ export function Home() {
 
   const arrFiltered = chooseArray(selectedFilter);
 
+  function renderItems() {
+    switch (perfil.type) {
+      case "heroes":
+        const heroes = dataHeros.map(({ name, ...rest }) => ({
+          typeArr: "heroes",
+          title: name,
+          ...rest,
+        }));
+        return heroes;
+      case "comics":
+        const comics = dataComics.map(({ ...rest }) => ({
+          typeArr: "comics",
+          ...rest,
+        }));
+        return comics;
+      case "events":
+        const events = dataEvents.map(({ ...rest }) => ({
+          typeArr: "events",
+          ...rest,
+        }));
+        return events;
+      case "series":
+        const series = dataSeries.map(({ ...rest }) => ({
+          typeArr: "series",
+          ...rest,
+        }));
+        return series;
+
+      default:
+        break;
+    }
+  }
+
   useEffect(() => {
     if (debouncedSearchTerm.length > 0) {
-      api(charactersEndpoint + `&nameStartsWith=${debouncedSearchTerm}`)
-        .then((response) => {
-          let newarr = response.data.data.results.map((item: Character) => {
-            const { name, ...rest } = item;
-            return { title: name, ...rest };
-          });
-          newarr.filter(
-            (item: Character) =>
-              !item.thumbnail.path.includes("/image_not_available")
-          );
-          setFilteredDataHeros(newarr);
-        })
-        .catch((error) => {
-          console.log("Api calls hero error filter: ", error);
-        });
+      switch (perfil.type) {
+        case "heroes":
+          api(charactersEndpoint + `&nameStartsWith=${debouncedSearchTerm}`)
+            .then((response) => {
+              let newarr = response.data.data.results.map((item: Character) => {
+                const { name, ...rest } = item;
+                return { title: name, ...rest };
+              });
+              newarr.filter(
+                (item: Character) =>
+                  !item.thumbnail.path.includes("/image_not_available")
+              );
+              setFilteredDataHeros(newarr);
+            })
+            .catch((error) => {
+              console.log("Api calls hero error filter: ", error);
+            });
+          break;
+        case "comics":
+          api(comicsEndpoint + `&titleStartsWith=${debouncedSearchTerm}`)
+            .then((response) => {
+              let newarr = response.data.data.results.map((item: Character) => {
+                const { name, id, ...rest } = item;
+                return { title: name, id: `${id}`, ...rest };
+              });
+              newarr.filter(
+                (item: Comic) =>
+                  !item.thumbnail.path.includes("/image_not_available") &&
+                  item.description
+              );
+              setFilteredDataComics(newarr);
+            })
+            .catch((error) => {
+              console.log("Api calls comics error filter: ", error);
+            });
+          break;
 
-      api(comicsEndpoint + `&titleStartsWith=${debouncedSearchTerm}`)
-        .then((response) => {
-          let newarr = response.data.data.results.map((item: Character) => {
-            const { name, id, ...rest } = item;
-            return { title: name, id: `${id}`, ...rest };
-          });
-          newarr.filter(
-            (item: Comic) =>
-              !item.thumbnail.path.includes("/image_not_available") &&
-              item.description
-          );
-          setFilteredDataComics(newarr);
-        })
-        .catch((error) => {
-          console.log("Api calls comics error filter: ", error);
-        });
+        case "events":
+          api(eventsEndpoint + `&nameStartsWith=${debouncedSearchTerm}`)
+            .then((response) => {
+              let newarr = response.data.data.results.map((item: Character) => {
+                const { name, id, ...rest } = item;
+                return { title: name, id: `${id}`, ...rest };
+              });
+              newarr.filter(
+                (item: Events) =>
+                  !item.thumbnail.path.includes("/image_not_available") &&
+                  item.description
+              );
+              setFilteredDataEvents(newarr);
+            })
+            .catch((error) => {
+              console.log("Api calls events error filter: ", error);
+            });
+          break;
+        case "series":
+          api(seriesEndpoint + `&titleStartsWith=${debouncedSearchTerm}`)
+            .then((response) => {
+              let newarr = response.data.data.results.map((item: Character) => {
+                const { name, id, ...rest } = item;
+                return { title: name, id: `${id}`, ...rest };
+              });
+              newarr.filter(
+                (item: Series) =>
+                  !item.thumbnail.path.includes("/image_not_available") &&
+                  item.description
+              );
+              setFilteredDataSeries(newarr);
+            })
+            .catch((error) => {
+              console.log("Api calls series error filter: ", error);
+            });
+          break;
 
-      api(eventsEndpoint + `&nameStartsWith=${debouncedSearchTerm}`)
-        .then((response) => {
-          let newarr = response.data.data.results.map((item: Character) => {
-            const { name, id, ...rest } = item;
-            return { title: name, id: `${id}`, ...rest };
-          });
-          newarr.filter(
-            (item: Events) =>
-              !item.thumbnail.path.includes("/image_not_available") &&
-              item.description
-          );
-          setFilteredDataEvents(newarr);
-        })
-        .catch((error) => {
-          console.log("Api calls events error filter: ", error);
-        });
-
-      api(seriesEndpoint + `&titleStartsWith=${debouncedSearchTerm}`)
-        .then((response) => {
-          let newarr = response.data.data.results.map((item: Character) => {
-            const { name, id, ...rest } = item;
-            return { title: name, id: `${id}`, ...rest };
-          });
-          newarr.filter(
-            (item: Series) =>
-              !item.thumbnail.path.includes("/image_not_available") &&
-              item.description
-          );
-          setFilteredDataSeries(newarr);
-        })
-        .catch((error) => {
-          console.log("Api calls series error filter: ", error);
-        });
+        default:
+          break;
+      }
     } else {
-      api(charactersEndpoint)
-        .then((response) => {
-          setDataHeros(response.data.data.results);
-        })
-        .catch((error) => {
-          console.log("Api calls hero error: ", error);
-        });
+      switch (perfil.type) {
+        case "heroes":
+          api(charactersEndpoint)
+            .then((response) => {
+              setDataHeros(response.data.data.results);
+            })
+            .catch((error) => {
+              console.log("Api calls hero error: ", error);
+            });
+          break;
+        case "comics":
+          api(comicsEndpoint)
+            .then((response) => {
+              setDataComics(response.data.data.results);
+            })
+            .catch((error) => {
+              console.log("Api calls comics error: ", error);
+            });
+          break;
+        case "events":
+          api(eventsEndpoint)
+            .then((response) => {
+              setDataEvents(response.data.data.results);
+            })
+            .catch((error) => {
+              console.log("Api calls events error: ", error);
+            });
+          break;
+        case "series":
+          api(seriesEndpoint)
+            .then((response) => {
+              setDataSeries(response.data.data.results);
+            })
+            .catch((error) => {
+              console.log("Api calls series error: ", error);
+            });
+          break;
 
-      api(comicsEndpoint)
-        .then((response) => {
-          setDataComics(response.data.data.results);
-        })
-        .catch((error) => {
-          console.log("Api calls comics error: ", error);
-        });
-
-      api(seriesEndpoint)
-        .then((response) => {
-          setDataSeries(response.data.data.results);
-        })
-        .catch((error) => {
-          console.log("Api calls series error: ", error);
-        });
-
-      api(eventsEndpoint)
-        .then((response) => {
-          setDataEvents(response.data.data.results);
-        })
-        .catch((error) => {
-          console.log("Api calls events error: ", error);
-        });
+        default:
+          break;
+      }
     }
   }, [debouncedSearchTerm]);
 
@@ -451,170 +510,51 @@ export function Home() {
           </View>
         ) : (
           <ScrollView contentContainerStyle={styles.homeContainer}>
-            <View style={styles.infoBox}>
-              <Text style={styles.subtitle}>Bem vindo ao Marvel Fans!</Text>
-              <Text style={styles.title}>Escolha o seu personagem</Text>
-              <Text style={styles.subtitle}>
-                O Universo Marvel é o universo compartilhado onde ocorrem as
-                histórias na maioria dos títulos de quadrinhos americanos e
-                outras mídias publicadas pela Marvel Entertainment.
-              </Text>
-            </View>
-            <View style={styles.listBox}>
-              <View
-                style={{
-                  justifyContent: "space-between",
-                  flexDirection: "row",
-                  paddingRight: 24
+            <FlatList
+                data={renderItems() as any}
+                keyExtractor={(item) => `${item.id}`}
+                renderItem={({ item }) => (
+                  <InfoCard
+                key={item.id}
+                onPress={() =>
+                  handleOpenInfoCard({
+                    title: item.title,
+                    id: item.id,
+                    thumbnail: item.thumbnail,
+                    description: item.description,
+                    type: item.typeArr,
+                  })
+                }
+                data={{
+                  title: item.title,
+                  id: item.id,
+                  thumbnail: item.thumbnail,
                 }}
-              >
-                <Text style={styles.listBoxTitle}>Heróis</Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("seeall", { type: "heroes" })
-                  }
-                  style={{flexDirection: "row", gap: 4}}
-                >
-                  <Text style={styles.listBoxTitle}>Ver tudo</Text>
-                  <ArrowRightIcon color={THEME.COLORS.RED}/>
-                </TouchableOpacity>
-              </View>
-              <FlatList
-                data={dataHeros
-                  .slice(0, 22)
-                  .filter(
-                    (item) =>
-                      !item.thumbnail.path.includes("/image_not_available")
-                  )}
-                keyExtractor={(item) => `${item.id}`}
-                renderItem={({ item }) => (
-                  <InfoCard
-                    onPress={() =>
-                      handleOpenHeroCard({
-                        title: item.name,
-                        id: item.id,
-                        thumbnail: item.thumbnail,
-                        description: item.description,
-                        amountStories: item.stories.available,
-                        amountComics: item.comics.available,
-                        amountEvents: item.events.available,
-                        amountSeries: item.series.available,
-                        type: "hero",
-                      })
-                    }
-                    data={{
-                      title: item.name,
-                      id: item.id,
-                      thumbnail: item.thumbnail,
-                    }}
-                  />
-                )}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.contentList}
               />
-            </View>
-            <View style={styles.listBox}>
-              <Text style={styles.listBoxTitle}>Quadrinhos</Text>
-              <FlatList
-                data={dataComics
-                  .slice(0, 22)
-                  .filter(
-                    (item) =>
-                      !item.thumbnail.path.includes("/image_not_available")
-                  )}
-                keyExtractor={(item) => `${item.id}`}
-                renderItem={({ item }) => (
-                  <InfoCard
-                    onPress={() =>
-                      handleOpenInfoCard({
-                        title: item.title,
-                        id: item.id,
-                        thumbnail: item.thumbnail,
-                        description: item.description,
-                        amountStories: item.stories.available,
-                        amountEvents: item.events.available,
-                        type: "comics",
-                      })
-                    }
-                    data={{
-                      title: item.title,
-                      id: item.id,
-                      thumbnail: item.thumbnail,
-                    }}
-                  />
                 )}
-                horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.contentList}
+                contentContainerStyle={styles.contentListHorizontal}
+                scrollEnabled={false}
               />
-            </View>
-            <View style={styles.listBox}>
-              <Text style={styles.listBoxTitle}>Séries</Text>
-              <FlatList
-                data={dataSeries
-                  .slice(0, 22)
-                  .filter(
-                    (item) =>
-                      !item.thumbnail.path.includes("/image_not_available")
-                  )}
-                keyExtractor={(item) => `${item.id}`}
-                renderItem={({ item }) => (
-                  <InfoCard
-                    onPress={() =>
-                      handleOpenInfoCard({
-                        title: item.title,
-                        id: item.id,
-                        thumbnail: item.thumbnail,
-                        description: item.description,
-                        type: "series",
-                      })
-                    }
-                    data={{
-                      title: item.title,
-                      id: item.id,
-                      thumbnail: item.thumbnail,
-                    }}
-                  />
-                )}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.contentList}
+            {/* {renderItems()?.map((item) => (
+              <InfoCard
+                key={item.id}
+                onPress={() =>
+                  handleOpenInfoCard({
+                    title: item.title,
+                    id: item.id,
+                    thumbnail: item.thumbnail,
+                    description: item.description,
+                    type: item.typeArr,
+                  })
+                }
+                data={{
+                  title: item.title,
+                  id: item.id,
+                  thumbnail: item.thumbnail,
+                }}
               />
-            </View>
-            <View style={styles.listBox}>
-              <Text style={styles.listBoxTitle}>Eventos</Text>
-              <FlatList
-                data={dataEvents
-                  .slice(0, 22)
-                  .filter(
-                    (item) =>
-                      !item.thumbnail.path.includes("/image_not_available")
-                  )}
-                keyExtractor={(item) => `${item.id}`}
-                renderItem={({ item }) => (
-                  <InfoCard
-                    onPress={() =>
-                      handleOpenInfoCard({
-                        title: item.title,
-                        id: item.id,
-                        thumbnail: item.thumbnail,
-                        description: item.description,
-                        type: "events",
-                      })
-                    }
-                    data={{
-                      title: item.title,
-                      id: item.id,
-                      thumbnail: item.thumbnail,
-                    }}
-                  />
-                )}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.contentList}
-              />
-            </View>
+            ))} */}
           </ScrollView>
         )}
       </View>

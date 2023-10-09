@@ -8,6 +8,7 @@ import { Home } from "../screens/Home";
 import { Info } from "../screens/Info";
 import { Login } from "../screens/Login";
 import { Perfil } from "../screens/Perfil";
+import { SeeAll } from "../screens/SeeAll";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ export function FavoriteStackRoutes() {
           <Stack.Screen name='favorites' component={Favorites} />
           <Stack.Screen name='perfil' component={Perfil} />
           <Stack.Screen name='info' component={Info} />
+          <Stack.Screen name='seeall' component={SeeAll} />
         </>
       ) : (
         <>

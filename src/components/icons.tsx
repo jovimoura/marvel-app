@@ -75,6 +75,19 @@ export const ArrowBackIcon = (props: any) => {
   );
 };
 
+export const ArrowRightIcon = (props: any) => {
+  return (
+    <Svg width='24' height='24' fill='none' viewBox='0 0 24 24' {...props}>
+      <Path
+        fill={props.color || "#000"}
+        fillRule='evenodd'
+        d='M14.866 6.124a1.25 1.25 0 011.768 0l5 5a1.25 1.25 0 010 1.767l-5 5a1.25 1.25 0 01-1.768-1.767l2.867-2.866H3.25a1.25 1.25 0 010-2.5h14.483L14.866 7.89a1.25 1.25 0 010-1.767z'
+        clipRule='evenodd'
+      ></Path>
+    </Svg>
+  );
+};
+
 export const HeroIcon = (props: any) => {
   return (
     <Svg width='24' height='24' fill='none' viewBox='0 0 24 24' {...props}>
