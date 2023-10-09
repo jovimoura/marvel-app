@@ -536,7 +536,7 @@ export function SeeAll() {
               )}
               showsHorizontalScrollIndicator={true}
               contentContainerStyle={styles.contentListHorizontal}
-              scrollEnabled
+              scrollEnabled={false}
             />
           </ScrollView>
         )}
