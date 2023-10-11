@@ -11,8 +11,6 @@ import {
 
 import { styles } from "./styles";
 import {
-  AppleIcon,
-  FacebookIcon,
   GoogleIcon,
   Line,
 } from "../../components/icons";
@@ -30,7 +28,7 @@ import { StatusBar } from "expo-status-bar";
 import { THEME } from "../../themes";
 import { useNavigation } from "@react-navigation/native";
 
-export function Login() {
+export function Login({ promptAsync }: any) {
   const auth = FIREBASE_AUTH;
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const navigation = useNavigation();
@@ -76,7 +74,7 @@ export function Login() {
 
   async function signUp() {
     const emailValidator = email === "" && !email.match(regex);
-    const passwordValidator = password === "";
+    const passwordValidator = password === "" && password.length > 7;
     const confirmPasswordValidator =
       confirmPassword === "" || password !== confirmPassword;
 
@@ -161,7 +159,7 @@ export function Login() {
                   icon='email'
                   errorMessage='Verifique seu email.'
                   showMessageError={showMessageEmailError}
-                  placeholder='tecnologia@pontua.com.br'
+                  placeholder='seu@email.com.br'
                 />
               </View>
               <View style={styles.boxInput}>
@@ -200,7 +198,7 @@ export function Login() {
                     <Line right />
                   </View>
                   <View style={styles.socialBox}>
-                    <TouchableOpacity style={styles.socialButton}>
+                    <TouchableOpacity onPress={() => promptAsync()} style={styles.socialButton}>
                       <GoogleIcon />
                       <Text style={styles.text}>Faça o login com Google</Text>
                     </TouchableOpacity>
@@ -252,7 +250,7 @@ export function Login() {
                   icon='email'
                   errorMessage='Por favor digite seu e-mail'
                   showMessageError={showMessageEmailError}
-                  placeholder='tecnologia@pontua.com.br'
+                  placeholder='seu@email.com.br'
                 />
               </View>
               <View style={styles.boxInput}>
@@ -263,7 +261,7 @@ export function Login() {
                   onChangeText={setPassword}
                   icon='password'
                   type='password'
-                  errorMessage='Por favor escolha uma senha'
+                  errorMessage='Por favor escolha uma senha de 8 caracteres'
                   showMessageError={showMessagePasswordError}
                   placeholder='Digite sua senha aqui...'
                   eyePress={() => setHidePassword(!hidePassword)}

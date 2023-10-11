@@ -29,7 +29,8 @@ import {
   seriesEndpoint,
 } from "../../services/endpoints";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { FIRESTORE_DB } from "../../../FirebaseConfig";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "../../../FirebaseConfig";
+import { onAuthStateChanged, User } from "firebase/auth";
 
 interface OpenCardProps {
   id: number;
@@ -61,6 +62,14 @@ export function Favorites() {
 
   const [dataEvents, setDataEvents] = useState<Events[]>([]);
   const [favoritesEvents, setFavoritesEvents] = useState<Character[]>([]);
+
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      setUser(user);
+    });
+  }, [user]);
 
   function handleOpenHeroCard({
     id,
@@ -122,9 +131,10 @@ export function Favorites() {
   function filterAllPerId(array1: any[], array2: any[]) {
     const idsAllArray1 = array1.map((item) => item.id);
     const allFiltrados = array2.filter((hero) =>
-    idsAllArray1.includes(hero.id)
+      idsAllArray1.includes(hero.id)
     );
-    return allFiltrados;
+
+    return allFiltrados.filter(item => item.id);
   }
 
   useEffect(() => {
@@ -170,7 +180,7 @@ export function Favorites() {
             ...doc.data(),
           });
         });
-        setFavoritesHeroes(favs);
+        setFavoritesHeroes(favs.filter(item => item.idUser == user?.uid));
       },
     });
     const favComicsRef = collection(FIRESTORE_DB, "favoriteComics");
@@ -183,7 +193,7 @@ export function Favorites() {
             ...doc.data(),
           });
         });
-        setFavoritesComics(favs);
+        setFavoritesComics(favs.filter(item => item.idUser == user?.uid));
       },
     });
     const favSeriesRef = collection(FIRESTORE_DB, "favoriteSeries");
@@ -196,7 +206,7 @@ export function Favorites() {
             ...doc.data(),
           });
         });
-        setFavoritesSeries(favs);
+        setFavoritesSeries(favs.filter(item => item.idUser == user?.uid));
       },
     });
 
@@ -210,7 +220,7 @@ export function Favorites() {
             ...doc.data(),
           });
         });
-        setFavoritesEvents(favs);
+        setFavoritesEvents(favs.filter(item => item.idUser == user?.uid));
       },
     });
   }, []);

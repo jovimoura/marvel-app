@@ -26,3 +26,6 @@ export const FIRESTORE_DB = getFirestore(FIREBASE_APP);
  *
  * https://stackoverflow.com/questions/76914913/cannot-import-getreactnativepersistence-in-firebase10-1-0
  */
+
+
+// ANDROID: 655349146543-pvn1vcuvhm45hantm9a3n3jaf4guqtfl.apps.googleusercontent.com

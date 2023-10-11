@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { THEME } from "../../themes";
 
 export const styles = StyleSheet.create({
-  container: { width: "100%", maxWidth: 300, flexDirection: "column" },
+  container: { width: "100%", flexDirection: "column" },
   inputBox: {
     width: "100%",
     position: "relative",

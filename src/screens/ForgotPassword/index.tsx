@@ -81,7 +81,7 @@ export function ForgotPassword() {
                 icon='email'
                 errorMessage='Por favor digite seu e-mail'
                 showMessageError={showMessageEmailError}
-                placeholder='tecnologia@pontua.com.br'
+                placeholder='seu@email.com.br'
               />
             </View>
             <ButtonGradient
