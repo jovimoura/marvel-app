@@ -223,7 +223,7 @@ export function Favorites() {
         setFavoritesEvents(favs.filter(item => item.idUser == user?.uid));
       },
     });
-  }, []);
+  }, [user]);
 
   return (
     <SafeAreaView style={styles.container}>

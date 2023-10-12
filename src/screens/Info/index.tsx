@@ -97,11 +97,11 @@ export function Info() {
               ...doc.data(),
             });
           });
-          setFavorites(favs);
+          setFavorites(favs.filter(item => item.idUser == user?.uid));
         },
       });
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {

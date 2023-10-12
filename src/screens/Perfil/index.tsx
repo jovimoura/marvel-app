@@ -143,10 +143,10 @@ export function Perfil() {
             ...doc.data(),
           });
         });
-        setFavorites(favs);
+        setFavorites(favs.filter(item => item.idUser == user?.uid));
       },
     });
-  }, []);
+  }, [user]);
 
   return (
     <SafeAreaView
