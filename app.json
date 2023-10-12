@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.jovimoura.marvelapp"
@@ -21,7 +23,8 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.jovimoura.marvelapp"
+      "package": "com.jovimoura.marvelapp",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/icon.png"
