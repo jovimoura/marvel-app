@@ -24,7 +24,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.jovimoura.marvelapp",
-      "versionCode": 4
+      "versionCode": 5
     },
     "web": {
       "favicon": "./assets/icon.png"
