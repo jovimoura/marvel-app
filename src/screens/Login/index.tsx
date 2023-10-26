@@ -27,6 +27,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { THEME } from "../../themes";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export function Login({ promptAsync }: any) {
   const auth = FIREBASE_AUTH;
@@ -141,14 +142,17 @@ export function Login({ promptAsync }: any) {
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <BackgroundImage
-          bgImg={require("../../assets/backgrounds/bg-login.png")}
+        <LinearGradient
+          colors={['rgba(179, 121, 223, 0.20)', 'rgba(204, 88, 84, 0.02)', 'rgba(179, 121, 223, 0.20)']}
+          start={{ x: 0.1532, y: 0.2104 }}
+          end={{ x: 1, y: 1 }}
+          style={{ flex: 1, width: '100%' }}
         >
           {viewSignIn ? (
             <View style={styles.form}>
               <View style={styles.header}>
                 <Text style={styles.title}>Faça login</Text>
-                <Text style={styles.subtitle}>Seja bem-vindo novamente.</Text>
+                <Text style={styles.subtitle}>Seja bem-vindo!</Text>
               </View>
               <View style={{ ...styles.boxInput, marginBottom: 12 }}>
                 <Text style={styles.label}>Usuário</Text>
@@ -192,7 +196,8 @@ export function Login({ promptAsync }: any) {
                     disabled={loading}
                     onPress={signIn}
                   />
-                  <View style={styles.socialLabel}>
+                  {/* proxima release */}
+                  {/* <View style={styles.socialLabel}>
                     <Line />
                     <Text style={styles.text}>Faça login com</Text>
                     <Line right />
@@ -202,7 +207,7 @@ export function Login({ promptAsync }: any) {
                       <GoogleIcon />
                       <Text style={styles.text}>Faça o login com Google</Text>
                     </TouchableOpacity>
-                  </View>
+                  </View> */}
                   <View
                     style={{
                       width: "100%",
@@ -227,7 +232,7 @@ export function Login({ promptAsync }: any) {
             <View style={styles.form}>
               <View style={styles.header}>
                 <Text style={styles.title}>Criar Conta</Text>
-                <Text style={styles.subtitle}>Seja bem-vindo!</Text>
+                <Text style={styles.subtitle}>Para criar uma conta é muito fácil!</Text>
               </View>
               <View style={{ ...styles.boxInput, marginBottom: 12 }}>
                 <Text style={styles.label}>Nome</Text>
@@ -315,7 +320,7 @@ export function Login({ promptAsync }: any) {
               )}
             </View>
           )}
-        </BackgroundImage>
+        </LinearGradient>
       </KeyboardAvoidingView>
     </BackgroundImage>
   );
