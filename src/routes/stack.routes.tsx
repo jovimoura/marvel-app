@@ -20,7 +20,9 @@ const Stack = createNativeStackNavigator();
 export function StackRoutes() {
   const [user, setUser] = useState<User | null>(null);
   const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: '655349146543-pvn1vcuvhm45hantm9a3n3jaf4guqtfl.apps.googleusercontent.com'
+    androidClientId: '655349146543-pvn1vcuvhm45hantm9a3n3jaf4guqtfl.apps.googleusercontent.com',
+    clientId: '655349146543-pvn1vcuvhm45hantm9a3n3jaf4guqtfl.apps.googleusercontent.com',
+    webClientId: '655349146543-5d7n8qlnghd7kb1k31140ubcojrnpvfk.apps.googleusercontent.com'
   })
 
   useEffect(() => {
