@@ -4,8 +4,6 @@ Consiste em um App feito com React Native e Firebase
 
 <br />
 
-```
-
 
 ## Como rodar
 
